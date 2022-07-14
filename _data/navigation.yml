@@ -3,10 +3,10 @@ main:
   - title: "Home"
     url: /
   - title: "Category"
-    url: "/categories/"
-  - title: "Posts"
-    url: /_posts/
-  - title: "Sample Collections"
-    url: /collection-archive/
-  - title: "Sitemap"
-    url: /sitemap/
+    url: /categories/
+  - title: "tag"
+    url: /tags/
+  # - title: "Sample Collections"
+  #   url: /collection-archive/
+  # - title: "Sitemap"
+  #   url: /sitemap/

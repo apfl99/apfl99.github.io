@@ -17,10 +17,10 @@ minimal_mistakes_skin    : "neon"
 # Site Settings
 locale                   : "ko-KR"
 title                    : "즐거운 블록체인 개발자 Blog"
-title_separator          : "-"
+title_separator          : "|"
 subtitle                 : "version 1.0"
-name                     : "김현우"
-description              : "An amazing website."
+name                     : "apfl99"
+description              : "apfl99의 블로그"
 url                      : "https://apfl99.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "https://github.com/apfl99/apfl99.github.io"
@@ -96,10 +96,10 @@ social:
 
 # Analytics
 analytics:
-  provider               : false # false (default), "google", "google-universal", "google-gtag", "custom"
+  provider               : "google-gtag"
   google:
-    tracking_id          :
-    anonymize_ip         : # true, false (default)
+    tracking_id          : "G-F9M4QNY6MV"
+    anonymize_ip         : false
 
 
 # Site Author
@@ -218,9 +218,9 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
-paginate: 15 # amount of posts to show
+paginate: 10 # amount of posts to show
 paginate_path: /page:num/
-timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Asia/Seoul
 
 
 # Plugins (previously gems:)
@@ -257,16 +257,16 @@ tag_archive:
   type: liquid
   path: /tags/
 # https://github.com/jekyll/jekyll-archives
-# jekyll-archives:
-#   enabled:
-#     - categories
-#     - tags
-#   layouts:
-#     category: archive-taxonomy
-#     tag: archive-taxonomy
-#   permalinks:
-#     category: /categories/:name/
-#     tag: /tags/:name/
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layouts:
+    category: archive-taxonomy
+    tag: archive-taxonomy
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
 
 
 # HTML Compression
