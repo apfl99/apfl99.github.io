@@ -12,6 +12,8 @@ search: true #검색 피하기
 
 # 재귀
 
+---------------------------
+
 재귀 : 동일한 구조의 더 작은 문제를 해결함으로써 주어진 문제를 해결하는 방법
 
 - Ex. 일반 함수를 이용한 배열의 합 구하기
@@ -73,6 +75,8 @@ function recursive(input, ...) {
 
 ### 재귀 예시
 
+---------------------------
+
 - 배열 형태 재귀
   - 뭔가 첫번째 요소 + 나머지 요소의 반복로 잘라서 생각하는 것이 편한 것 같다.
   - Ex. 배열의 평탄화
@@ -132,3 +136,4 @@ console.log(output); // --> false
 [재귀를 활용한 JSON.stringify 구현 예제](https://github.com/apfl99/im-sprint-stringify-json)
 
 [재귀를 활용한 Tree UI 구현 예제](https://github.com/apfl99/im-sprint-tree-ui)
+
