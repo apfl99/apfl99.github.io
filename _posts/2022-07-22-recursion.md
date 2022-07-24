@@ -73,5 +73,62 @@ function recursive(input, ...) {
 
 ### 재귀 예시
 
+- 배열 형태 재귀
+  - 뭔가 첫번째 요소 + 나머지 요소의 반복로 잘라서 생각하는 것이 편한 것 같다.
+  - Ex. 배열의 평탄화
 
+```js
+function flattenArr(arr) {
+  return arr.reduce(function (result, item) { //reduce를 활용한 각 요소 접근 및 return 할 배열 정의
+    if(Array.isArray(item)) { //현재 요소 값이 배열이라면 평탄화를 하고 result와 합치기
+      const flattened =flattenArr(item);
+      return [...result, ...flattend];
+    } else {	// 현재 요소가 배열이 아니라면 그냥 합치기 : Base Case
+			return [...result,item]
+    }
+  },[])
+}
 
+let output = flattenArr([[1],2,[3,4],5]);
+console.log(output); // -< [1,2,3,4,5]
+
+output = flattenArr([[2,[[3]]],4,[[[5]]]]);
+console.log(output); // -> [2,3,4,5]
+```
+
+- 객체 형태의 재귀
+  - 객체는 주로 자식 노드에 대한 접근으로 진행되며, 재귀의 간단한 문제 제한(Base Case), 역시 자식 노드가 더 존재하지 않을때로 많이 사용한다.
+  - Ex. 러시아 인형, 조건에 맞는 객체 찾기
+
+```js
+function findMatryoshka(matryoshka, size) {
+  //Base Case : matryoshka가 더 이상존재하지 않을 경우
+  if(matryoshka == null || Object.keys(matryoshka).length == 0) {
+    return false;
+  }
+  if(matryoshka.size === size) { // 조건에 맞는 객체를 찾은 경우
+    return true
+  }
+  
+  //재귀 : 자식 노드에 대한 접근
+  return findMatryoshka(matryoshka.matryoshka,size)
+}
+
+const matryoshka = {
+  size: 10,
+  matryoshka: {
+    size: 9,
+    matryoshka: null,
+  },
+};
+
+let output = findMatryoshka(matryoshka, 10);
+console.log(output); // --> true
+
+output = findMatryoshka(matryoshka, 8);
+console.log(output); // --> false
+```
+
+[재귀를 활용한 JSON.stringify 구현 예제](https://github.com/apfl99/im-sprint-stringify-json)
+
+[재귀를 활용한 Tree UI 구현 예제](https://github.com/apfl99/im-sprint-tree-ui)
