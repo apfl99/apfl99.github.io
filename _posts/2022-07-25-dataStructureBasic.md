@@ -12,6 +12,8 @@ search: true #검색 피하기
 
 # Stack
 
+---------------------------
+
 Stack : 데이터를 순서대로 쌓는 자료구조
 
 
@@ -110,6 +112,8 @@ console.log(output2); // [["A", "B"], "D", ["E"]]
 
 # Queue
 
+---------------------------
+
 Queue : Stack과 마찬가지로, 데이터를 순서대로 쌓지만 데이터가 입력된 순서대로 처리할 때 주로 사용
 
 
@@ -203,9 +207,11 @@ let output = queuePrinter(bufferSize, capacities, documents);
 console.log(output) // 8
 ```
 
-
+<br>
 
 # *Push, Pop, unShift, Shift
+
+---------------------------
 
 ## Push
 
@@ -244,6 +250,30 @@ console.log(arr) // -> [0,1,2,3]
 ```js
 var arr = [0,1,2,3,4]
 arr.unshift(5)
-console.log(arr) // -> [5,0,1,2,3]
+console.log(arr) // -> [5,0,1,2,3,4]
 ```
+
+![IMG_36D8BED3F191-1](../../images/2022-07-25-dataStructureBasic/IMG_36D8BED3F191-1.jpeg)
+
+{: .align-center}
+
+[unShift MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
+
+
+
+## Shift
+
+```js
+var arr = [0,1,2,3,4]
+arr.shift(5)
+console.log(arr) // -> [1,2,3,4]
+```
+
+![IMG_8F49381A1AAD-1](../../images/2022-07-25-dataStructureBasic/IMG_8F49381A1AAD-1.jpeg)
+
+{: .align-center}
+
+[Shift MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
+
+
 
