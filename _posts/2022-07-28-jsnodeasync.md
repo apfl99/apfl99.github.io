@@ -224,5 +224,5 @@ result()
 
 
 
-[Callback, Promise, async/await를 활용한 fs, fetch API 사용](https://github.com/apfl99/im-sprint-async-and-promise)
+[Callback, Promise, async/await를 활용한 fs, fetch API 사용 예제](https://github.com/apfl99/im-sprint-async-and-promise)
 
