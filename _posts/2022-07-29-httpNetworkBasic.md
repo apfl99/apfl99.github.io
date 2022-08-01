@@ -99,7 +99,7 @@ Port : IP 주소가 가리키는 PC에 접속할 수 있는 채널
   - 80 : HTTP
   - 443 :  HTTPS
   - ...
-- 이미 정해진 포트 번호라도, 필요에 따라 자유롭게 사용가능, 알려지지 않은 포트의 경우 명시
+- 이미 정해진 포트 번호라도, 필요에 따라 자유롭게 사용가능하고, 알려지지 않은 포트의 경우 명시한다.
 
 
 
@@ -286,6 +286,8 @@ CORS :   Cross-Origin Resource Sharing, SOP(Same-Origin Policy. : 동일 출처 
 
 ### CORS 표준
 
+---------------------------------
+
 - Fetch API와 XMLHttpRequest
 - Web CSS
 - WebGL texture
@@ -298,7 +300,7 @@ CORS :   Cross-Origin Resource Sharing, SOP(Same-Origin Policy. : 동일 출처 
 
 ### CORS 접근 제어 시나리오
 
-
+---------------------------------
 
 #### Simple Requests
 
@@ -335,14 +337,12 @@ xhr.send();
 ```js
 const xhr = new XMLHttpRequest();
 xhr.open('POST', 'https://bar.other/resources/post-here/');
-xhr.setRequestHeader('Ping-Other', 'pingpong');
-xhr.setRequestHeader('Content-Type', 'application/xml');
+xhr.setRequestHeader('Ping-Other', 'pingpong'); // 요청 헤더 설정
+xhr.setRequestHeader('Content-Type', 'application/xml'); // 사용자 정의 헤더 설정으로 preflighted
 xhr.onreadystatechange = handler;
 xhr.send('<person><name>Arun</name></person>');
 ```
 
-- - Ping-Other : 요청 헤더 설정
-  - Content-type : application/xml : 사용자 정의 헤더 설정으로 preflighted
 - Request에 따라 Response로 허가가 된다.
   - Request
     - Origin : 요청 출처
@@ -356,7 +356,28 @@ xhr.send('<person><name>Arun</name></person>');
 
 
 
-#### 
+#### Requests with credential
+
+- HTTP cookies와 HTTP Authentication 정보를 인식하여 CORS 허용
+  - 일반적으로 XMLHttpRequest나 Fetch에서 브라우저는 자격증명을 보내지 않기 때문에 특정 플래그 설정
+- Ex.
+
+```js
+const invocation = new XMLHttpRequest();
+const url = 'http://bar.other/resources/credentialed-content/';
+
+function callOtherDomain() {
+  if (invocation) {
+    invocation.open('GET', url, true);
+    invocation.withCredentials = true; //쿠키와 함께 호출
+    invocation.onreadystatechange = handler;
+    invocation.send();
+  }
+}
+```
+
+- Preflighted 가 아닌 simple request로 응답에 Access-Control-Allow-Credentials가 true가 아닐 경우 CORS 허용 되지 않음
+- 또한, 요청 헤더에 쿠키가 포함되기 때문에 Access-Control-Allow-Origin의 경우 *이 아닌 요청 URL로 지정해야 한다.
 
 
 
