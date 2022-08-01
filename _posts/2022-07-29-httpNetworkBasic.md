@@ -125,7 +125,7 @@ HTTP : HyperText Transfer Protocol, HTML과 같은 문서를 전송하기 위한
 
 ## HTTP Message
 
-![스크린샷 2022-08-01 오후 6.17.10](../../images/2022-07-29-httpNetworkBasic/스크린샷 2022-08-01 오후 6.17.10.png)
+![스크린샷 2022-08-01 오후 6.17.10](../../images/2022-07-29-httpNetworkBasic/requestresponse.png)
 
 {: .align-center}
 
@@ -147,7 +147,7 @@ HTTP Message는 위와 같은 형식으로 완성되며, Request와 Response의 
     - OPTIONS * HTTP/1.1
 - Header 
 
-![스크린샷 2022-08-01 오후 6.25.22](../../images/2022-07-29-httpNetworkBasic/스크린샷 2022-08-01 오후 6.25.22.png)
+![스크린샷 2022-08-01 오후 6.25.22](../../images/2022-07-29-httpNetworkBasic/header1.png)
 
 {: .align-center}
 
@@ -184,7 +184,7 @@ HTTP Message는 위와 같은 형식으로 완성되며, Request와 Response의 
   - Ex. HTTP/1.1 404 Not Found
 - Header : 요청 헤더와 동일한 구조
 
-![스크린샷 2022-08-01 오후 10.21.02](../../images/2022-07-29-httpNetworkBasic/스크린샷 2022-08-01 오후 10.21.02.png)
+![스크린샷 2022-08-01 오후 10.21.02](../../images/2022-07-29-httpNetworkBasic/header2.png)
 
 {: .align-center}
 
