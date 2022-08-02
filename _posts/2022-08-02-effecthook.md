@@ -2,7 +2,7 @@
 title: "[React] Effect Hook"
 categories:
  - BEB
-tags: [] 
+tags: [Side Effect, Effect Hook, useEffect] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
