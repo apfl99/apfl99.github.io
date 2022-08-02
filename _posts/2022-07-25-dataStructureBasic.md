@@ -1,5 +1,5 @@
 ---
-title: "자료 구조 기초 : Stack, Queue"
+title: "[자료 구조 기초] Stack, Queue"
 categories:
  - BEB
 tags: [Data Structure, Stack, Queue] 
