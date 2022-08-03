@@ -380,6 +380,8 @@ function callOtherDomain() {
 - 또한, 요청 헤더에 쿠키가 포함되기 때문에 Access-Control-Allow-Origin의 경우 *이 아닌 요청 URL로 지정해야 한다.
 
 
-
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+</div>
 
 

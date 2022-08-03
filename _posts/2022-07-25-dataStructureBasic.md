@@ -276,4 +276,6 @@ console.log(arr) // -> [1,2,3,4]
 [Shift MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
 
 
-
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+</div>

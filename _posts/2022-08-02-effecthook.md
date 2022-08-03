@@ -104,3 +104,14 @@ useEffect(() => {
 [Effect Hook를 활용한 예제](https://github.com/apfl99/im-sprint-statesairline-client)
 
 [State Hook를 활용한 예제](https://github.com/apfl99/im-sprint-cmarket-hooks)
+
+
+
+
+
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+  <h5>Reference</h5>
+  <a>https://ko.reactjs.org/docs/hooks-effect.html</a>
+</div>
+

@@ -226,3 +226,8 @@ result()
 
 [Callback, Promise, async/await를 활용한 fs, fetch API 사용 예제](https://github.com/apfl99/im-sprint-async-and-promise)
 
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+  <h5>Reference</h5>
+  <a>https://youtu.be/8aGhZQkoFbQ</a>
+</div>
