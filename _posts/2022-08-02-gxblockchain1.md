@@ -4,10 +4,10 @@ categories:
  - GroundX
 tags: [] 
 toc: true
-author_profile: false #profile sidebar 감추기
+author_profile: true #profile sidebar 감추기
 # sidebar:
 #     nav: "docs" # 목차 사이드바
-search: false #검색 피하기
+search: true #검색 피하기
 ---
 
 
