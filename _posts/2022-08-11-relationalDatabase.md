@@ -1,5 +1,5 @@
 ---
-title: "[데이터베이스] 관계형 데이터베이스"
+title: "[데이터베이스] 관계형 데이터베이스 - SQL DataBase"
 categories:
  - GroundX
 tags: [Relational DB, ACID, SQL, Schema 설계, 데이터베이스 정규화] 
@@ -572,3 +572,4 @@ Ex. COMMIT, ROLLBACK
 <div class="notice">
   <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
 </div>
+
