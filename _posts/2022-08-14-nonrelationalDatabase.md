@@ -1,7 +1,7 @@
 ---
 title: "[데이터베이스] 비관계형 데이터베이스 - NoSQL Database : MongoDB"
 categories:
- - GroundX
+ - BEB
 tags: [Non Relational Database, NoSQL, MongoDB] 
 toc: true
 author_profile: true #profile sidebar 감추기
@@ -99,19 +99,105 @@ hello\x00                  // field name
 
 
 
-### Importing & Exporting
+## MongoDB 사용하기 with Atlas
 
-------------
+[MongoDB 설치 및 서비스 확인](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/)
+
+
+
+### Import & Export
+
+----------
 
 
 
 #### Export
 
-- BSON
+- BSON & JSON : mongodump
 
 ```shell
-mongodump --uri "mongodb+srv://<your username>:<your password>@<your cluster>.mongodb.net/database_name"
+mongodump --uri "<Atlas Cluster URI>"
+# Atlas Cluster URI : mongodb+srv://<your name>:<your password>@<your cluster>.mongodb.net/database_name"
+ 
+```
+- - 여기서 your cluster는 atlas의 connect shell에서 확인 가능하다.
+  - Ex. cluster0.clusterkey.mongodb.net
+
+![img1](../../images/2022-08-14-nonrelationalDatabase/img1.png)
+
+{: .align-center}
+
+![img2](../../images/2022-08-14-nonrelationalDatabase/img2.png)
+
+{: .align-center}
+
+
+
+- JSON : mongoexport
+
+```shell
+mongoexport --uri "<Atlas Cluster URI>"
+						--collection=<collection name>
+						--out=<filename>.json
 ```
 
+![img3](../../images/2022-08-14-nonrelationalDatabase/img3.png)
+
+{: .align-center}
+
+![img4](../../images/2022-08-14-nonrelationalDatabase/img4.png)
+
+{: .align-center}
 
 
+
+#### Import
+
+- BSON & JSON : mongorestore
+
+```shell
+mongorestore --uri "<Atlas Cluster URI>"
+						 --drop <dump dir>
+```
+
+- - 여기서 drop을 통해 기존에 있던 데이터를 삭제한다.(선택)
+
+![img5](../../images/2022-08-14-nonrelationalDatabase/img5.png)
+
+- JSON & CSV
+
+```shell
+mongoimport --uri "<Atlas Cluster URI>"
+						--drop <filename>.json
+```
+
+- - 마찬가지로 drop을 통해 기존에 있던 데이터를 삭제한다.(선택)
+  - --collection 옵션을 통해 컬렉션을 지정할 수도 있다.
+
+![img6](../../images/2022-08-14-nonrelationalDatabase/img6.png)
+
+{: .align-center}
+
+
+
+### CRUD
+
+------------
+
+
+
+
+
+
+
+## MongoDB 사용하기 with Atlas + Compass
+
+
+
+
+
+
+
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+</div>
