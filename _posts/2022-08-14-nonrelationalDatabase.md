@@ -2,7 +2,7 @@
 title: "[데이터베이스] 비관계형 데이터베이스 - NoSQL Database : MongoDB"
 categories:
  - BEB
-tags: [Non Relational Database, NoSQL, MongoDB] 
+tags: [Non Relational Database, NoSQL, MongoDB, Atlas, Compass] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
@@ -186,15 +186,151 @@ mongoimport --uri "<Atlas Cluster URI>"
 
 
 
+#### Create : insert
+
+```shell
+db.collection.insert({
+	# some content ex. {...}
+})
+```
+
+- MongoDB 도큐먼트는 모든 도큐먼트가 _id 필드를 기본값으로 반드시 가지고 있어야 한다.
+- _id 필드는 중복을 허용하지 않으며, 각 도큐먼트를 구별하는 역할을 한다.
+- _id : ObjectId(12byte, 24char)
+  - Ex. ObjectId("59b99db4cfa9a34dcd7885b6")
+- 다수의 도큐먼트의 경우 []로 감싼다.
+  - 이 경우 배열 안의 리스트 된 순서대로 진행되기 때문에 
+  - {ordered: false}로 순서와 상관 없이 고유한 _id를 가진 도큐먼트는 모두 컬렉션에 삽입될 수 있다.
+- 존재하지 않는 컬렉션에 insert할 경우 컬렉션이 만들어지면서 데이터가 삽입된다.
+
+- Ex.
+
+```shell
+db.products.insert(
+   [
+     { _id: 20, item: "lamp", qty: 50, type: "desk" },
+     { _id: 21, item: "lamp", qty: 20, type: "floor" },
+     { _id: 22, item: "bulk", qty: 100 }
+   ],
+   { ordered: false }
+)
+```
+
+[insert 공식문서](https://www.mongodb.com/docs/manual/reference/method/db.collection.insert/#mongodb-method-db.collection.insert)
 
 
 
+#### READ : find, findOne()
 
-## MongoDB 사용하기 with Atlas + Compass
+- find : 데이터 조회
+- .findOne() : 특정한 데이터 한 개만 조회(여러 개일 경우 무작위)
+
+```shell
+db.collection.find(query,projection)
+# query Ex. {"state":"NY"}
+```
+
+- .pretty() : 데이터를 읽기 편하게 정렬하여 보여준다.
+- .count() : 데이터 수 조회
+- 이하 skip, limit, sort .. 등 find나 findOne 뒤에 붙이면 기능에 따른 조회를 할 수 있다.
+
+- Ex.
+
+```shell
+db.bios.find( {
+   birth: { $gt: new Date('1920-01-01') },
+   death: { $exists: false }
+} ).pretty()
+```
+
+[find 공식문서](https://www.mongodb.com/docs/manual/reference/method/db.collection.find/#mongodb-method-db.collection.find)
+
+[findOne 공식문서](https://www.mongodb.com/docs/manual/reference/method/db.collection.findOne/#mongodb-method-db.collection.findOne)
 
 
 
+#### UPDATE : updateOne(), updateMany()
 
+- updateOne() : 주어진 기준에 맞는 다수의 도큐먼트 중 첫번째 도큐먼트 하나만 업데이트
+- updateMany() : 쿼리문과 일치하는 모든 도큐먼트를 업데이트
+
+```shell
+db.collection.updateOne( {
+	<filter>, #ex. {"field": "value"}
+	<update>  #ex. {"$set" : {"population":6235}}
+})
+```
+
+- $set : 해당 필드 값 수정
+- $inc : 해당 필드 값에 값 추가
+- $push : 배열로 이루어진 필드의 값에 요소를 추가하기 위한 연산자
+- ...
+- Ex.
+
+```shell
+   db.restaurant.updateMany(
+      { violations: { $gt: 4 } },
+      { $set: { "Review" : true } }
+   );
+```
+
+[updateOne 공식문서]([**https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/#mongodb-method-db.collection.updateOne**](https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/#mongodb-method-db.collection.updateOne))
+
+[updateMany]([**https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany**](https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany))
+
+
+
+#### DELETE : deleteOne(), deleteMany() ,drop()
+
+- deleteOne() : 주어진 기준에 맞는 다수의 도큐먼트 중 첫번째 도큐먼트 하나를 삭제
+- deleteMany() : 쿼리문과 일치하는 모든 도큐먼트를 삭제
+- drop() : 해당 컬렉션 삭제
+
+```shell
+db.collection.deleteOne(
+   <filter>, #ex. {"field": "value"}
+)
+```
+
+- Ex.
+
+```shell
+   db.orders.deleteMany(
+       { "client" : "Crude Traders Inc." },
+       { w : "majority", wtimeout : 100 }
+   );
+```
+
+[deleteOne 공식문서](https://www.mongodb.com/docs/manual/reference/method/db.collection.deleteOne/#mongodb-method-db.collection.deleteOne)
+
+[deleteMany 공식문서](https://www.mongodb.com/docs/manual/reference/method/db.collection.deleteMany/#mongodb-method-db.collection.deleteMany)
+
+[drop 공식문서](https://www.mongodb.com/docs/manual/reference/method/db.collection.drop/#mongodb-method-db.collection.drop)
+
+
+
+## + MongoDB 사용하기 with Atlas + Compass
+
+위의 Import& Export, CRUD 과정은 Compass 툴을 통해서 GUI로 보다 쉽게 작업 가능하다.
+
+![img7](../../images/2022-08-14-nonrelationalDatabase/img7.png)
+
+{: .align-center}
+
+[compass](https://www.mongodb.com/docs/compass/current/?_ga=2.265061519.1226231499.1660475059-1378108012.1660183316)
+
+
+
+### Aggregation Framework
+
+-----------------
+
+- MQL보다 다양한 쿼리를 작성할 수 있다.
+- 파이프라인의 각 단계 순서대로 데이터가 처리된다.
+- 이 안의 데이터는 원본데이터를 수정하거나 변경하지 않는다.
+- 각 단계의 이름 앞에는 "$"가 있고 그 뒤에는 실행할 작업에 대한 설명이 온다.
+
+[Aggregation Framework](https://www.mongodb.com/docs/manual/reference/operator/aggregation/)
 
 
 
