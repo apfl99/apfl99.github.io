@@ -529,6 +529,8 @@ module.exports = (req, res) => {
 
 ```
 
+[Token 예제](https://github.com/apfl99/im-sprint-auth-token)
+
 <br>
 
 # OAuth
@@ -571,7 +573,245 @@ OAuth란 기존의 서버에서 인증처리를 해주는 것과 달리, 인증�
 
 ## OAuth with Github
 
+[Github OAuth App 등록](https://www.oauth.com/oauth2-servers/accessing-data/create-an-application/)
 
+
+
+### Authorization Code 발급 요청
+
+----------
+
+```js
+import React, { Component } from 'react';
+
+class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.socialLoginHandler = this.socialLoginHandler.bind(this)
+    // OAuth 인증이 완료되면 authorization code와 함께 callback url로 리디렉션
+
+    //인증 요청 URL client_id
+    this.GITHUB_LOGIN_URL = "https://github.com/login/oauth/authorize?client_id=a93aeebd1425b31c6a53"
+  }
+
+  socialLoginHandler() {
+    window.location.assign(this.GITHUB_LOGIN_URL) // 로그인 버튼 클릭 시 인증 확인 창 -> 인증 시 URL param에 
+  }
+
+  render() {
+    return (
+      <div className='loginContainer'>
+        OAuth 2.0으로 소셜 로그인을 구현해보세요.
+        <img id="logo" alt="logo" src="https://image.flaticon.com/icons/png/512/25/25231.png" />
+        <button
+          onClick={this.socialLoginHandler}
+          className='socialloginBtn'
+        >
+          Github으로 로그인
+          </button>
+      </div>
+    );
+  }
+}
+
+export default Login;
+
+```
+
+
+
+### Access Token 발급 요청
+
+----------
+
+```js
+import React, { Component } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Login from './components/Login';
+import Mypage from './components/Mypage';
+import axios from 'axios';
+class App extends Component {
+  constructor() {
+    super();
+    this.state = { // 로그인 여부, accessToken 상태 저장
+      isLogin: false,
+      accessToken: ""
+    };
+    this.getAccessToken = this.getAccessToken.bind(this);
+  }
+
+  async getAccessToken(authorizationCode) {
+    // 받아온 authorization code로 다시 OAuth App에 요청해서 access token을 받기 
+    // 서버의 /callback 엔드포인트로 authorization code를 보내주고 access token을 요청
+    await axios({
+      url: "http://localhost:8080/callback",
+      method: "post",
+      data: {
+        authorizationCode: authorizationCode
+      }
+    }).then((response) => {
+      this.setState({ // 상태 값 업데이트 
+        isLogin: true, // 로그인 여부 true
+        accessToken: response.data.accessToken // accessToken
+      })
+    })
+
+  }
+
+  componentDidMount() {
+    const url = new URL(window.location.href)
+    const authorizationCode = url.searchParams.get('code') // url param 받아 오기
+    if (authorizationCode) {
+      // authorization server로부터 클라이언트로 리디렉션된 경우, authorization code가 함께 전달
+      // ex) http://localhost:3000/?code=5e52fb85d6a1ed46a51f
+      this.getAccessToken(authorizationCode)
+    }
+  }
+
+  render() {
+    const { isLogin, accessToken } = this.state;
+    return (
+      <Router>
+        <div className='App'>
+          {isLogin ? (
+            <Mypage accessToken={accessToken} />
+          ) : (
+              <Login />
+            )}
+        </div>
+      </Router>
+    );
+  }
+}
+
+export default App;
+
+```
+
+
+
+### Access Token 발급 응답
+
+----------
+
+```js
+require('dotenv').config();
+
+const clientID = process.env.GITHUB_CLIENT_ID;
+const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+const axios = require('axios');
+
+module.exports = (req, res) => {
+  // console.log(req.body.authorizationCode);
+
+  // TODO : 이제 authorization code를 이용해 access token을 발급받기 위한 post 요청
+  // https://docs.github.com/en/free-pro-team@latest/developers/apps/identifying-and-authorizing-users-for-github-apps#2-users-are-redirected-back-to-your-site-by-github
+  axios({
+    method: 'post',
+    url: "https://github.com/login/oauth/access_token",
+    headers: { 'content-type': 'application/json' },
+    data: {
+      client_id: clientID,
+      client_secret: clientSecret,
+      code: req.body.authorizationCode // code를 포함한 요청 
+    }
+  }).then((response) => {
+      return res.status(200).json({accessToken : response.data.access_token}) // accessToken 응답
+  })
+  
+
+
+}
+
+```
+
+
+
+### Resource 요청
+
+----------
+
+```js
+import React, { Component } from "react";
+import axios from 'axios';
+const { Octokit } = require("@octokit/core");
+
+class Mypage extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { // github로부터 받아올 상태 값
+      images: [],
+      name: "",
+      login: "",
+      url: "",
+      public_repos: 0
+    }
+  }
+
+  async getGitHubUserInfo() {
+    // GitHub API를 통해 사용자 정보 받기
+    // https://docs.github.com/en/free-pro-team@latest/rest/reference/users#get-the-authenticated-user
+    const octokit = new Octokit({
+      auth: this.props.accessToken // accessToken을 req에 넣어서
+    })
+    
+   const userInfo = await octokit.request('GET /user', {})
+   this.setState({
+     name: userInfo.data.name,
+     login: userInfo.data.login,
+     url: userInfo.data.html_url,
+     public_repos: userInfo.data.public_repos
+   })
+
+  }
+
+  componentDidMount() {
+    this.getGitHubUserInfo()
+    this.getImages()
+  }
+
+  render() {
+    const { accessToken } = this.props
+
+    if (!accessToken) {
+      return <div>로그인이 필요합니다</div>
+    }
+
+    return (
+      <div>
+        <div className='mypageContainer'>
+          <h3>Mypage</h3>
+          <hr />
+
+          <div>안녕하세요. <span className="name" id="name">{this.state.name}</span>님! GitHub 로그인이 완료되었습니다.</div>
+          <div>
+            <div className="item">
+              나의 로그인 아이디:
+              <span id="login">{this.state.login}</span>
+            </div>
+            <div className="item">
+              나의 GitHub 주소:
+              <span id="html_url">{this.state.url}</span>
+            </div>
+            <div className="item">
+              나의 public 레포지토리 개수:
+              <span id="public_repos">{this.state.public_repos}</span>개
+            </div>
+        </div>
+      </div >
+    );
+  }
+
+}
+
+export default Mypage;
+
+```
+
+
+
+[OAuth 예제](https://github.com/apfl99/im-sprint-auth-oauth)
 
 
 
