@@ -704,7 +704,7 @@ const axios = require('axios');
 module.exports = (req, res) => {
   // console.log(req.body.authorizationCode);
 
-  // TODO : 이제 authorization code를 이용해 access token을 발급받기 위한 post 요청
+  // authorization code를 이용해 access token을 발급받기 위한 post 요청
   // https://docs.github.com/en/free-pro-team@latest/developers/apps/identifying-and-authorizing-users-for-github-apps#2-users-are-redirected-back-to-your-site-by-github
   axios({
     method: 'post',
