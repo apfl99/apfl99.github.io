@@ -709,7 +709,7 @@ module.exports = (req, res) => {
   axios({
     method: 'post',
     url: "https://github.com/login/oauth/access_token",
-    headers: { 'content-type': 'application/json' },
+    headers: { 'accept': 'application/json' }, //json형식으로 응답을 받겠슴다.
     data: {
       client_id: clientID,
       client_secret: clientSecret,
@@ -818,3 +818,4 @@ export default Mypage;
 <div class="notice">
   <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
 </div>
+
