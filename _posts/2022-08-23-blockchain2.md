@@ -2,7 +2,7 @@
 title: "Blockchain Intro 2"
 categories:
  - BEB
-tags: [공개 범위에 따른 블록체인, 분산 원장 기술, 트랜잭션, 합의 알고리즘, 지갑과 어카운트] 
+tags: [공개 범위에 따른 블록체인, 분산 원장 기술, 트랜잭션, 합의 알고리즘, 지갑과 어카운트, 비트코인 코어, 이더리움 클라이언트, 블록체인 거버넌스] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
