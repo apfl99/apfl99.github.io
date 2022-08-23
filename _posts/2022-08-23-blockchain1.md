@@ -2,7 +2,7 @@
 title: "Blockchain Intro 1"
 categories:
  - BEB
-tags: [] 
+tags: [기존 금융 시스템, 블록체인, 암호화폐, 비트코인, 이더리움] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
