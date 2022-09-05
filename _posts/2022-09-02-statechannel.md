@@ -2,7 +2,7 @@
 title: "블록체인 레이어 2 솔루션 : 상태 채널"
 categories:
  - Blockchain
-tags: [] 
+tags: [statechannel] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
