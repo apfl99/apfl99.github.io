@@ -76,3 +76,7 @@ search: true #검색 피하기
   - Next Difficulty = current difficulty * 2 weeks/T(Time in which previous 2016 blocks found)
   - 위와 같이 비트코인은 2016개의 블록을 주기로 이전 주기에서 2016개의 블록이 형성될 때까지의 시간을 체크하여 새로운 난이도를 조정한다. 
 
+
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+</div>
