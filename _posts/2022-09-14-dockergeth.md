@@ -96,7 +96,9 @@ $ apt-get install -y build-essential golang # go 설치
 $ geth version
 ```
 
+![i5](../../images/2022-09-14-dockergeth/i5.png)
 
+{: .align-center}
 
 
 
@@ -105,6 +107,4 @@ $ geth version
   <h5>Reference</h5>
   <a>https://itsfoss.com/ppa-guide/</a>
   <br>
-  <a></a>
-	<br>
 </div>
