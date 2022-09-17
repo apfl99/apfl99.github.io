@@ -73,31 +73,33 @@ search: true #검색 피하기
 
 ---
 
-1. 트랜잭션을 발생시킬 각 참여자들은 각자의 비밀을 가지고 비밀을 해시한 값을 서로 공유한다.
+1) 트랜잭션을 발생시킬 각 참여자들은 각자의 비밀을 가지고 비밀을 해시한 값을 서로 공유한다.
 
 ![1](../../images/2022-09-16-lightingnetwork/1-3419467.png)
 
 {: .align-center}
 
-2. 참여자들은 다중서명 주소에 Commitment Transactions(트랜잭션에 대한 기록, 실제로 블록에 올라가는 트랜잭션은 아님)를 생성한다.
+2) 참여자들은 다중서명 주소에 Commitment Transactions(트랜잭션에 대한 기록, 실제로 블록에 올라가는 트랜잭션은 아님)를 생성한다.
    - 여기서 트랜잭션에는 자신의 주소에 지불하는 값과 새로운 다중서명 주소에 고정되어 있는 값이 포함된다.
 
 ![2](../../images/2022-09-16-lightingnetwork/2.png)
 
 {: .align-center}
 
-3. 각 참여자들은 생성한 Commitment Transactions를 상대방에게 전달한다.
+3) 각 참여자들은 생성한 Commitment Transactions를 상대방에게 전달한다.
 
 ![3](../../images/2022-09-16-lightingnetwork/3.png)
 
 {: .align-center}
 
-4. 아래 조건 하에Commitment Transactions이 서명될 수 있다.
+4) 아래 조건 하에Commitment Transactions이 서명될 수 있다.
    - 참여자 간의 협조적인 서명
    - 타임락으로 인한 서명
    - 상대방의 비밀을 알 경우(그러나, 해시만 교환했기 때문에 알 수 없음)
-5. Commitment Transactions 서명이 완료되면 이 기록은 블록체인에 직접 기록되는 내용인 Funding Transaction에 기록될 수 있는 상태가 된다.
-6. 생성된 Funding Transaction에 Commitment Transaction이 기록되고 Funding Transaction 또한 같은 과정으로 서명이 완료되어 승인되면 트랜잭션을 발생시킬 수 있다.
+
+5) Commitment Transactions 서명이 완료되면 이 기록은 블록체인에 직접 기록되는 내용인 Funding Transaction에 기록될 수 있는 상태가 된다.
+
+6) 생성된 Funding Transaction에 Commitment Transaction이 기록되고 Funding Transaction 또한 같은 과정으로 서명이 완료되어 승인되면 트랜잭션을 발생시킬 수 있다.
 
 
 
