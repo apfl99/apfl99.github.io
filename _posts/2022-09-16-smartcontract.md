@@ -185,7 +185,7 @@ P2PKH는 P2PK에서 수신자의 공개 키 공개 문제를 개선한 스크립
 
 #### 라이트닝 네트워크(Lightning Network)
 
-비트코인의 TPS는 일정한데, 트랜잭션의 양이 증가함에 따라 트랜잭션 속도가 감소한다. 이러한 문제를 해결하기 위해 대안으로 라이트닝 네트워크가 등장했다. 
+[라이트닝 네트워크]()
 
 
 
@@ -193,8 +193,20 @@ P2PKH는 P2PK에서 수신자의 공개 키 공개 문제를 개선한 스크립
 
 #### 루트스탁(Rootstock, RSK)
 
+[루트스탁]()
+
 
 
 #### 탭루트(TapRoot)
 
-[TapRoot](https://apfl99.github.io/beb/dlt2/#tap-root)
+[탭루트](https://apfl99.github.io/beb/dlt2/#tap-root)
+
+
+
+
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+  <h5>Reference</h5>
+  <a></a>
+  <br>
+</div>
