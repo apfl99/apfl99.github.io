@@ -2,7 +2,7 @@
 title: "블록체인 인프라 아키텍처"
 categories:
  - BEB
-tags: [] 
+tags: [CAP, PACELC, 샤딩] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
