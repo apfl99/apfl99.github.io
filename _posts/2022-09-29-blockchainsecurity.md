@@ -349,6 +349,8 @@ The DAO는 DAO 거버넌스의 초기 구현체이며, DAO는 블록체인 기�
 
 
 
-​<div class="notice">
+<div class="notice">
   <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
 </div>
+
+
