@@ -153,7 +153,7 @@ HTTP Message는 위와 같은 형식으로 완성되며, Request와 Response의 
 
   - 
     - General Headers : 메시지 전체에 적용한다.
-    - Request Headers : User-Agent, Accept-Type, Accept-Language과 같은 헤더는 요청을 보다 구체화한다. referer처럼 컨텍스트를 제공하거난 If-None과 같이 조건에 따라 제약을 추가할 수 있다.
+    - Request Headers : User-Agent, Accept-Type, Accept-Language과 같은 헤더는 요청을 보다 구체화한다. referer처럼 컨텍스트를 제공하거나 If-None과 같이 조건에 따라 제약을 추가할 수 있다.
     - Entity Headers : Content-Length와 같은 헤더는 body에 적용된다. 따라서 body가 비어있는 경우 전송되지 않는다.
   - Body : message 구조 마지막에 위치하며, GET, HEAD, DELETE, OPTIONS와 같이 서버에 리소스를 요청하는 경우에는 필요없다.
     - 구분
