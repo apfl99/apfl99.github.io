@@ -18,6 +18,8 @@ search: true #검색 피하기
 
 ---
 
+Git Repo : https://github.com/apfl99/BEB-06-FIRST-04
+
 
 
 ## Opensea Clone Coding 프로젝트 요구사항
@@ -75,7 +77,19 @@ task 6) 마이 페이지
 
 
 
+## WorkFlow
+
+![스크린샷 2022-10-26 오후 5.16.22](../../images/2022-10-18-openseaProject/스크린샷 2022-10-26 오후 5.16.22.png)
+
+{: .align-center}
+
+
+
+
+
 ## NFT 민팅 페이지
+
+Minting contract : 0x01E95863D9B2e85Ca5ad754dE1248B63eaD9Da48
 
 ![mint](../../images/2022-10-18-openseaProject/mint.gif)
 
@@ -87,15 +101,11 @@ task 6) 마이 페이지
 
 
 
-### NFT Minting Workflow
-
----
-
-
-
 
 
 ## NFT 상세 페이지 - 판매등록
+
+TransactionNFT contract : 0x95602fd56336Ca99b2a08143B47838B2dC0F27e3
 
 ![approve](../../images/2022-10-18-openseaProject/approve.gif)
 
@@ -115,7 +125,17 @@ task 6) 마이 페이지
 
 
 
+### 어려웠던 점..
+
+---
+
+
+
+
+
 ## NFT 상세 페이지 - 구매
+
+TransactionNFT contract : 0x95602fd56336Ca99b2a08143B47838B2dC0F27e3
 
 ![buy](../../images/2022-10-18-openseaProject/buy.gif)
 
@@ -129,3 +149,13 @@ task 6) 마이 페이지
 
 
 
+### 어려웠던 점..
+
+---
+
+
+
+
+<div class="notice">
+  <p>본 포스팅은 코드스테이츠 BEB 과정을 수강하며 작성한 글입니다.</p>
+</div>
