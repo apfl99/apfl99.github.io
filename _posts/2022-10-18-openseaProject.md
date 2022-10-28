@@ -18,7 +18,7 @@ search: true #검색 피하기
 
 ---
 
-Git Repo : https://github.com/apfl99/BEB-06-FIRST-04
+Git Repo : [https://github.com/apfl99/BEB-06-FIRST-04](https://github.com/apfl99/BEB-06-FIRST-04)
 
 
 
@@ -79,7 +79,7 @@ task 6) 마이 페이지
 
 ## WorkFlow
 
-![스크린샷 2022-10-26 오후 5.16.22](../../images/2022-10-18-openseaProject/스크린샷 2022-10-26 오후 5.16.22.png)
+![flowchart](../../images/2022-10-18-openseaProject/flowchart.png)
 
 {: .align-center}
 
@@ -125,14 +125,6 @@ TransactionNFT contract : 0x95602fd56336Ca99b2a08143B47838B2dC0F27e3
 
 
 
-### 어려웠던 점..
-
----
-
-
-
-
-
 ## NFT 상세 페이지 - 구매
 
 TransactionNFT contract : 0x95602fd56336Ca99b2a08143B47838B2dC0F27e3
@@ -152,6 +144,12 @@ TransactionNFT contract : 0x95602fd56336Ca99b2a08143B47838B2dC0F27e3
 ### 어려웠던 점..
 
 ---
+
+가장 어려웠던 문제는 컨트랙트간 함수 호출이었습니다. 판매자 대신 거래를 대행 하려면, 거래 컨트랙은 판매자가 판매한 토큰에 대한 승인을 받아야합니다. 이 과정에서 저는 거래 컨트랙 내부에서 msg.sender를 유지하는 delegate call을 통해 판매한 토큰 컨트랙의 approve 함수에 접근하여 사용하려고 했습니다. 그러나 delegate call은 call과 다르게 접근한 컨트랙의 메모리를 바꾸지 못한다는 것을 학습하였고, call로는 msg.sender가 유지되지 않아 프론트 단에서 판매자가 직접 approve를 처리하게 하였고, 이후 거래 컨트랙에서 구매로직의 토큰 전송은 이미 허가되었기 때문에 call을 사용할 수도 있었지만, 토큰의 collection 주소를 IERC721로 가져와 함수를 실행시키는 것이 가독성이 좋다고 판단하여 이를 통해 해결하였습니다.
+
+[Delegate Call](https://solidity-by-example.org/delegatecall/)
+
+
 
 
 
