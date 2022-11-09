@@ -175,7 +175,29 @@ Git Repo : [https://github.com/apfl99/BEB-06-SECOND-7ZO/tree/main](https://githu
 
 ## WorkFlow & WireFrame
 
-[Figma WorkFlow & WireFrame](https://www.figma.com/file/h70z1B1MG9wxmFmXxxmSBg/7ZO?node-id=0%3A1)
+
+
+### WorkFlow
+
+---
+
+![https://user-images.githubusercontent.com/108708252/200509544-82bcc2cb-7763-4690-bffc-4ca8b4d06d03.png](../../images/2022-11-04-incentiveCommunity/200509544-82bcc2cb-7763-4690-bffc-4ca8b4d06d03.png)
+
+{: .align-center}
+
+![https://user-images.githubusercontent.com/108708252/200509549-a5c1e950-d566-43f8-b597-a52b26db2df5.png](../../images/2022-11-04-incentiveCommunity/200509549-a5c1e950-d566-43f8-b597-a52b26db2df5.png)
+
+{: .align-center}
+
+
+
+### WireFrame
+
+---
+
+![https://user-images.githubusercontent.com/108708252/200531775-27c8232f-3760-422c-a0a2-b555878784d5.png](../../images/2022-11-04-incentiveCommunity/200531775-27c8232f-3760-422c-a0a2-b555878784d5.png)
+
+{: .align-center}
 
 
 
@@ -216,21 +238,11 @@ Git Repo : [https://github.com/apfl99/BEB-06-SECOND-7ZO/tree/main](https://githu
 
 
 
-### Mypage
-
----
-
-![mypage](../../images/2022-11-04-incentiveCommunity/mypage.gif)
-
- {: .align-center}
-
-
-
 ### Transfer20 
 
 ----
 
-![transfer20](../../images/2022-11-04-incentiveCommunity/transfer20.gif)
+![transfer20](../../images/2022-11-04-incentiveCommunity/transfer20-7969165.gif)
 
  {: .align-center}
 
@@ -240,7 +252,7 @@ Git Repo : [https://github.com/apfl99/BEB-06-SECOND-7ZO/tree/main](https://githu
 
 ----
 
-![mint](../../images/2022-11-04-incentiveCommunity/mint.gif)
+![ minting](../../images/2022-11-04-incentiveCommunity/ minting.gif)
 
 {: .align-center}
 
@@ -250,7 +262,7 @@ Git Repo : [https://github.com/apfl99/BEB-06-SECOND-7ZO/tree/main](https://githu
 
 ---
 
-![faucet](../../images/2022-11-04-incentiveCommunity/faucet.gif)
+![faucet](../../images/2022-11-04-incentiveCommunity/faucet-7969202.gif)
 
 {: .align-center}
 
@@ -260,7 +272,7 @@ Git Repo : [https://github.com/apfl99/BEB-06-SECOND-7ZO/tree/main](https://githu
 
 ---
 
-![daemon](../../images/2022-11-04-incentiveCommunity/daemon.gif)
+![daemon](../../images/2022-11-04-incentiveCommunity/daemon-7969211.gif)
 
 {: .align-center}
 
