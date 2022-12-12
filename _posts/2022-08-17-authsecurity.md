@@ -550,7 +550,7 @@ OAuth란 기존의 서버에서 인증처리를 해주는 것과 달리, 인증�
 - Resource Server : Client의 요청을 수락하고 응답할 수 있는 서버
 
 - Authorization Server : Resource Server가 엑세스 토큰을 발급받는 서버
-- Authorization Grant : 클라이언트가 엑세스 토큰을 얻릉 때 사용하는 자격 증명의 유형
+- Authorization Grant : 클라이언트가 엑세스 토큰을 얻을 때 사용하는 자격 증명의 유형
 - Authorization Code : Access Token을 발급받기 위해 필요한 code, client secret과 code를 통해 Access Token을 생성
 - Access Token : 보호된 리소스에 엑세스하는 데 사용되는 토큰
 - Scope : 토큰의 권한을 정의, 주어진 엑세스 토큰을 사용하여 엑세스할 수 있는 리소스의 범위
