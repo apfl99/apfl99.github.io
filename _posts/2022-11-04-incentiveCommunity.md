@@ -2,7 +2,7 @@
 title: "Project 2 : Incentive Community"
 categories:
  - BEB
-tags: [] 
+tags: [Token economy, ERC20, ERC721] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:

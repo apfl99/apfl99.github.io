@@ -2,7 +2,7 @@
 title: "Project 1 : Opensea Clone Coding"
 categories:
  - BEB
-tags: [] 
+tags: [NFT, OpenSea] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
