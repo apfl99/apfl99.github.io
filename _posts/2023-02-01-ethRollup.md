@@ -1,7 +1,7 @@
 ---
 title: "DankSharding의 등장 배경"
 categories:
- - DankSharding & Rollup
+ - DankSharding
 tags: [Ethereum 2.0, Vitalik Buterin’s Endgame, A rollup-centric ethereum roadmap] 
 toc: true
 author_profile: true #profile sidebar 감추기
@@ -42,7 +42,7 @@ search: true #검색 피하기
 
 
 
-[The merge]()
+[The Merge]()
 
 
 
@@ -50,7 +50,7 @@ search: true #검색 피하기
 
 ## A rollup-centric Ethereum roadmap
 
-그러나 2020년 Vitalik Buterin은 "A rollup-centric Ethereum roadmap"을 게시하며, 롤업 중점의 이더리움 로드맵을 주장했다.
+2020년 Vitalik Buterin은 "A rollup-centric Ethereum roadmap"을 게시하며, 롤업 중점의 이더리움 로드맵을 주장했다.
 
 이러한 주장의 근거는 경제적 지속 가능성과 TPS이다.
 
