@@ -1,8 +1,8 @@
 ---
 title: "DankSharding의 등장 배경"
 categories:
- - DankSharding에서의 롤업 적용 연구
-tags: [Vitalik Buterin’s Endgame, A rollup-centric ethereum roadmap] 
+ - DankSharding & Rollup
+tags: [Ethereum 2.0, Vitalik Buterin’s Endgame, A rollup-centric ethereum roadmap] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
@@ -22,9 +22,11 @@ search: true #검색 피하기
 
 ## Ethereum 2.0 기존의 로드맵
 
-2018년 타이페이에서 열린 연구 워크숍에서 결정한 "Ethereum 2.0" 로드맵은 다음과 같다.![e2 roadmap](../images/2023-02-01-ethRollup/e2 roadmap.png)
+2018년 타이페이에서 열린 연구 워크숍에서 결정한 "Ethereum 2.0" 로드맵은 다음과 같다.
 
+![e2 roadmap](../../images/2023-02-01-ethRollup/e2 roadmap.png)
 
+{: .align-center}
 
 
 
@@ -37,6 +39,12 @@ search: true #검색 피하기
 
 
 이 중 현재 진행 사항은 비콘 체인과 메인 체인이 병합된 "The Merge"로, 원래 작업 증명 메커니즘(PoW)에서 지분 증명 메커니즘(PoS)으로 업그레이드를 완료했다.
+
+
+
+[The merge]()
+
+
 
 
 
@@ -70,6 +78,10 @@ TPS는 장기적으로 미래를 구상했을때,
 
 
 
+
+
+
+## EndGame
 
 
 
