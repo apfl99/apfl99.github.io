@@ -33,8 +33,18 @@ search: true #검색 피하기
 위의 다이어그램은 로드맵의 각 단계별 내용을 보여주는데, 주요 요소는
 
 - 비콘 체인 : 샤드 체인과 메인 체인 사이의 브리지 역할을 하며, 스테이커(PoS 블록의 유효성 검사자)를 관리한다.
+  - Consensus-Layer
+    - Random Number Generation
+      - Selecting block proposer
+      - Selecting notarization committee
 - 샤드 체인 : 메인 체인을 64개로 분할하여 네트워크 부하를 분산한다.
+  - Data-Layer
+    - Only Data-Consensus
+      - Block bodies are just blobs, no state root in the header
+      - Data availabliity
 - VM : 각 샤드가 자체적으로 트랜잭션을 처리하고 스마트 계약을 실행할 수 있게 하고, 교차 샤드 트랜잭션을 처리하기 위해 서로 통신할 수 있다.
+  - State-Layer
+    - Ethereum flavored WebAssembly(eWASM)
 
 
 
@@ -42,7 +52,7 @@ search: true #검색 피하기
 
 
 
-[The Merge]()
+[The Merge](https://apfl99.github.io/danksharding/TheMerge/)
 
 
 
@@ -105,9 +115,9 @@ TPS는 장기적으로 미래를 구상했을때,
 
 <div class="notice">
   <h5>Reference</h5>
-  1) <a>https://tim.mirror.xyz/CHQtTJb1NDxCK41JpULL-zAJe7YOtw-m4UDw6KDju6c</a>
+  1) <a>https://docs.google.com/presentation/d/1G5UZdEL71XAkU5B2v-TC3lmGaRIu2P6QSeF8m3wg6MU/edit#slide=id.g3bd8f42e24_0_167</a>
   <br>
-  2) <a>https://www.alchemy.com/overviews/what-is-the-ethereum-beacon-chain</a>
+  2) <a>https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698</a>
   <br>
-  3) <a>https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698</a>
+  3) <a></a>
 </div>
