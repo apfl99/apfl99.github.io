@@ -89,7 +89,51 @@ TPS는 장기적으로 미래를 구상했을때,
 
 ------
 
+블록체인 시스템에서 각 네트워크 노드는 모든 트랜잭션을 검증해야 한다. 여기에는 많은 양의 컴퓨팅 성능, 저장 용량 및 시간이 필요한데, 롤업은 각 노드가 처리해야 하는 데이터의 양을 줄임으로써 트랜잭션을 검증하는 데 필요한 리소스와 시간을 줄이는 방법이다. 롤업은 메인 체인 외부에서 트랜잭션을 처리하는 행위자로 구성된 Layer 2 네트워크를 사용하여 제공되며, 트랜잭션 데이터는 Layer 1에 게시되는 배치로 롤업된다.
 
+롤업 시스템은 Layer 1의 Smart Contract를 통해 구현되며, 롤업 시스템의 다양한 행위자(e.g., aggregators, sequencers, verifiers)는 이 Smart Contract와 상호작용한다. Aggregator는 해당 계약을 통해 트랜잭션 데이터 및 기타 정보(e.g., state root)를 게시할 수 있고, 검증자는 또한 필요할 때 거래에 대해 이의를 제기하는데 사용한다.
+
+![thiba4-3200051-large](../../images/2023-02-01-ethRollup/thiba4-3200051-large.gif)
+
+{: .align-center}
+
+사용자는 롤업 Smart Contract로 거래하여 롤업에 참여하며, 먼저 자금을 입금한다. 이 자금은 사용자에게 비례 가치의 Layer 2 토큰의 양을 제공하고, 제공받은 토큰으로 사용자는 Layer 2에서 거래할 수 있다.
+
+Layer 2에서 거래하기 위해 사용자는 직접하거나 Layer 1 Smart Contract를 통해 Aggregators에게 거래를 보낸다. 그런 다음 Aggregator는 받은 트랜잭션 집합을 선택하고 실행한 다음 압축된 트랜잭션 데이터(Rollup Data)를 Layer 1에 게시한다. 
+
+이후 롤업 데이터는 공개되고 변경할 수 없게 되고, Layer 1의 토큰을 회수하기 위해 사용자는 Smart Contract로 거래하고 Layer 1 수수료를 한 번 더 지급한다.
+
+
+
+**롤업 데이터**
+
+![diag1](../../images/2023-02-01-ethRollup/diag1.png)
+
+{: .align-center}
+
+롤업에서는 트랜잭션 데이터를 위 그림과 같이 State Root로 압축 및 저장하는데, 
+
+![diag2](../../images/2023-02-01-ethRollup/diag2.png)
+
+{: .align-center}
+
+검증을 위해 이전 상태 루트 및 새 상태 루트와 함께 고도로 압축된 트랜잭션 모음인 Batch를 게시한다. 이 때, Smart Contract는 Batch의 이전 상태 루트 및 현재 루트와 일치하는 지 확인하고 상태 루트를 새 상태 루트로 전환한다.
+
+여기서 새 상태 루트에 대한 검증이 필요한데, 이 검증의 방법에 따라 Optimistic Rollup과 ZK Rollup으로 나뉜다.
+
+
+
+#### Optimistic Rollup
+
+---
+
+
+
+
+
+#### ZK Rollup
+
+----
 
 
 
@@ -121,14 +165,13 @@ TPS는 장기적으로 미래를 구상했을때,
 
 
 
-
 <div class="notice">
   <h5>Reference</h5>
   1) <a>https://docs.google.com/presentation/d/1G5UZdEL71XAkU5B2v-TC3lmGaRIu2P6QSeF8m3wg6MU/edit#slide=id.g3bd8f42e24_0_167</a>
   <br>
   2) <a>https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698</a>
   <br>
-  3) <a></a>
+  3) <a>https://ieeexplore.ieee.org/abstract/document/9862815</a>
   <br>
   4) <a></a>
   <br>
