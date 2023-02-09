@@ -119,7 +119,7 @@ Layer 2에서 거래하기 위해 사용자는 직접하거나 Layer 1 Smart Con
 
 검증을 위해 이전 상태 루트 및 새 상태 루트와 함께 고도로 압축된 트랜잭션 모음인 Batch를 게시한다. 이 때, Smart Contract는 Batch의 이전 상태 루트 및 현재 루트와 일치하는 지 확인하고 상태 루트를 새 상태 루트로 전환한다.
 
-여기서 새 상태 루트에 대한 검증이 필요한데, 이 검증의 방법에 따라 Optimistic Rollup과 ZK Rollup으로 나뉜다.
+여기서 새 상태 루트에 대한 검증이 필요한데, 이 검증의 방법에 따라 사기 증명을 사용하는 Optimistic Rollup과 유효성 증명을 ZK Rollup으로 나뉜다.
 
 
 
@@ -129,25 +129,84 @@ Layer 2에서 거래하기 위해 사용자는 직접하거나 Layer 1 Smart Con
 
 Optimistic Rollup에서 Aggregators는 Off Chain Tx를 실행하고 트랜잭션 데이터와 새로운 상태 루트를 게시한다. 여기에는 유효성 증명은 포함되어 있지 않으며 계층 1 및 2 노드는 이 행위자가 실행한 계산이 유효하다는 가정한다. 따라서 Main Chain의 노드는 새로운 Batch가 게시될 때마다 모든 트랜잭션을 처리할 필요가 없어 Layer 1의 노드 부하가 줄어든다.
 
+Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는데, Aggregators는 Layer 2에서 직접 또는 체인 간 스마트 계약을 통해 트랜잭션을 수집한다. 이후 Aggregators는 임의의 수의 트랜잭션을 선택하여 처리하고 압축된 트랜잭션 데이터와 상태 루트를 Layer 1 체인에 게시한다. 이때, 검증자는 집계자가 게시한 데이터를 지속적으로 모니터링하고 검증자가  트랜잭션이 실행될 때, 게시된 상태 루트로 이어진다는 데 동의하지 않으면 분쟁 단계를 시작한다. 
 
-
-Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는데, 
-
-Aggregators는 Layer 2에서 직접 또는 체인 간 스마트 계약을 통해 수집된다. 이후 Aggregators는 임의의 수의 트랜잭션을 선택하여 처리하고 압축된 트랜잭션 데이터와 상태 루트를 Layer 1 체인에 게시한다. 이때, 검증자는 집계자가 게시한 데이터를 지속적으로 모니터링하고 검증자가 게시된 데이터에 동의하지 않으면 분쟁 단계를 시작한다. 분쟁 단계는 검증자가 게시된 트랜잭션이 실행되면 게시된 상태 루트로 이어진다는 데 동의하지 않을 때 발생한다.
-
+이 분쟁 단계에서 Aggregators는 부정직한 행위를 하고, Verifier가 사기 증명을 통해 Aggregators의 부정적한 행위를 증명하면 Aggregator의 채권 절반을 보상으로 받고, 채권의 나머지 절반은 소각된다.  반대로 분쟁 단계에 진입하지 않은 경우에는 일정시간이 지나면 거래의 완결성이 보장된다.
 
 
 
+##### 분쟁 단계 : 사기 증명
 
+----
 
+![thiba6-3200051-large](../images/2023-02-01-ethRollup/thiba6-3200051-large.gif)
 
+![thiba7-3200051-large](../images/2023-02-01-ethRollup/thiba7-3200051-large.gif)
 
+첫 번째 그림이 유효한 상태 트리이고, 두 번째 그림과 같이 사기 트랜잭션이 발생했을 때, 검증자는 로컬 상태에서 게시된 트랜잭션을 재생하고 결과 상태 루트를 비교한다. 또한 불일치가 발견될 경우 검증자가 사기 증명을 트리거한다.
+
+사기 증명은 배치 자체(체인에 저장된 해시와 비교) 및 읽은 특정 계정을 증명하는 데 필요한 Merkle 트리의 일부로 배치를 실행하고 사후 상태 루트를 계산함으로써 진행되며,  계산된 사후 루트와 제공된 사후 상태 루트가 동일하지 않으면 사기 증명이 생성된다. 이 때, 롤업에 게시된 유효하지 않은 배치가 둘 이상인 경우 가장 오래된 배치가 유효하지 않음을 증명하는 것이 좋다.
 
 
 
 #### ZK Rollup
 
 ----
+
+zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 유효하다는 가정을 하지 않고, 트랜잭션 데이터와 함꼐 게시된 상태 루트가 정확하다는 증거를 제출한다. 이 증거는 ZK(Zero-Knowledge)를 활용한 암호화 도구를 사용하여 제작되며, Zero-Knowledge는 계산에 필요한 입력 데이터가 설득력을 갖기 위해 검증자와 공유할 필요가 없음을 의미한다. 따라서 검증자가 모든 계산을 스스로 수행하지 않고도 증명(Zero-Knowledge Proof)이 가능하다.
+
+
+
+##### ZKP(Zero-Knowledge Proof) formal definition 
+
+----
+
+- Prover : 자신이 가지고 있는 정보가 무엇인지 공개하지 않고, Verifier에게 정보를 알고 있다는 것을 증명하고 싶은 참여자
+- Verifier : Prover가 해당 정보를 가지고 있음을 검증하고 싶은 참여자
+- Secret : Prover가 가지고 있음을 증명하고 싶은 정보이며, 모두에게 숨기고자 하는 정보
+- Challenge : Verifier가 Prover가 Secret을 가지고 있는지 확인하기 위해 문제를 내는 과정
+- Statement is true : Verifier가 Prover가 Secret을 가지고 있음을 검증한 상태
+
+
+
+
+
+![1__uEWsd2qtyDbh6stbw86EQ](../images/2023-02-01-ethRollup/1__uEWsd2qtyDbh6stbw86EQ.webp)
+
+- P(x) : Prover
+- V(x, z) : Verifier
+- <--> : Prover와 Verifier의 Challenge 과정
+- View : interactive proof 과정을 관찰하여 기록한 것
+- z : Verifier의 Challenge Value
+
+위 정의를 보면, Prover의 Secret(x)에 대하여 Verifier가 z값에 따라 challenge하면서 해당 증명 과정을 기록한다. 이는 계속해서 Prover가 Challenge과정에서 올바른 답을 제공했다면, Verifier는 확률적으로 Prover가 secret을 가지고 있다고 확신할 수 있다.
+
+이를 이산 로그에 대입하여 실제 구현을 보면,
+
+- y : 주어진 값, p : large prime(소수), g : generator
+- Prover는 g^x(mod p) = y가 되는 x값(secret)을 알고 있으며, y값은 x값을 통해 구할 수 있다.
+- Prover는 사전에 y값을 Verifier에게 공유한다.
+- Prover는 모든 Verifier에게 x값을 알고 있다고 증명하고 싶지만 x값은 노출하지 않는다.
+
+에서 증명은
+
+1. Prover는 y = g^x(mod p)를 계산하여 Verifier에게 y값을 준다.
+2. Prover는 C = g^r(mod p)를 계산하여 C를 Verifier에게 주고, r 값은 공개하지 않는다. (r : random number)
+3. Verifier는 Prover에게 challenge value에 따라 r을 요청하거나, (x+r)(mod (p-1))을 요청한다.
+
+
+
+Verfier가 r을 요청한 경우, Verifier는 C를 알고 있기 때문에 r값을 통해 C를 계산하여 값을 비교하면 된다.
+
+![1_9rnL987k8cgjw3UiyTsoMg](../../images/2023-02-01-ethRollup/1_9rnL987k8cgjw3UiyTsoMg.webp)
+
+Verifier가 (x+r)(mod(p-1))을 요청한 경우, 1번과 2번을 통해 Verifier는 y값과 C값을 알고 있기 때문에 Verifier는 아래 식을 통해 비교하면 된다.
+
+![1_7yXNpiZqux4HoF7eoCpdUA](../../images/2023-02-01-ethRollup/1_7yXNpiZqux4HoF7eoCpdUA.webp)
+
+
+
+
 
 
 
@@ -189,7 +248,7 @@ Aggregators는 Layer 2에서 직접 또는 체인 간 스마트 계약을 통해
   <br>
   4) <a>https://vitalik.ca/general/2021/01/05/rollup.html</a>
   <br>
-  5) <a></a>
+  5) <a>https://hyun-jeong.medium.com/h-3c3d45861ced</a>
   <br>
   6) <a></a>
   <br>
