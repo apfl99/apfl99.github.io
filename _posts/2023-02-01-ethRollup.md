@@ -127,6 +127,20 @@ Layer 2에서 거래하기 위해 사용자는 직접하거나 Layer 1 Smart Con
 
 ---
 
+Optimistic Rollup에서 Aggregators는 Off Chain Tx를 실행하고 트랜잭션 데이터와 새로운 상태 루트를 게시한다. 여기에는 유효성 증명은 포함되어 있지 않으며 계층 1 및 2 노드는 이 행위자가 실행한 계산이 유효하다는 가정한다. 따라서 Main Chain의 노드는 새로운 Batch가 게시될 때마다 모든 트랜잭션을 처리할 필요가 없어 Layer 1의 노드 부하가 줄어든다.
+
+
+
+Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는데, 
+
+Aggregators는 Layer 2에서 직접 또는 체인 간 스마트 계약을 통해 수집된다. 이후 Aggregators는 임의의 수의 트랜잭션을 선택하여 처리하고 압축된 트랜잭션 데이터와 상태 루트를 Layer 1 체인에 게시한다. 이때, 검증자는 집계자가 게시한 데이터를 지속적으로 모니터링하고 검증자가 게시된 데이터에 동의하지 않으면 분쟁 단계를 시작한다. 분쟁 단계는 검증자가 게시된 트랜잭션이 실행되면 게시된 상태 루트로 이어진다는 데 동의하지 않을 때 발생한다.
+
+
+
+
+
+
+
 
 
 
@@ -173,7 +187,7 @@ Layer 2에서 거래하기 위해 사용자는 직접하거나 Layer 1 Smart Con
   <br>
   3) <a>https://ieeexplore.ieee.org/abstract/document/9862815</a>
   <br>
-  4) <a></a>
+  4) <a>https://vitalik.ca/general/2021/01/05/rollup.html</a>
   <br>
   5) <a></a>
   <br>
