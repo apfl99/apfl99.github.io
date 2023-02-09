@@ -181,11 +181,49 @@ zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 �
 
 
 
+##### 트랜잭션 데이터 압축
+
+----
+
+원래 ETH 전송 트랜잭션은 ~110bytes를 사용하지만, Rollup에서의 트랜잭션은 ~12bytes를 사용할 수 있다.
+
+| Parameter | Ethereum               | Rollup |
+| :-------- | :--------------------- | :----- |
+| Nonce     | ~3                     | 0      |
+| Gasprice  | ~8                     | 0-0.5  |
+| Gas       | 3                      | 0-0.5  |
+| To        | 21                     | 4      |
+| Value     | ~9                     | ~3     |
+| Signature | ~68 (2 + 33 + 33)      | ~0.5   |
+| From      | 0 (recovered from sig) | 4      |
+| Total     | ~112                   | ~12    |
+
+- Nonce : Nonce는 이중 지불 방지 문제를 해결하기 위한 파라미터이다. 그러나 롤업의 경우 이전 상태로부터 Nonce를 복원할 수 있기 때문에 전체 Nonce를 생략할 수 있으며, 만약 누군가 이전 논스로 이중 지불을 시도하여도, 최근의 논스를 포함하는 데이터와 대조하여 서명이 검증되기 때문에 해당 서명 검증은 실패한다.
+- Gasprice : 이는 사용자에게 고정된 범위의 가스비를 지불하도록 하거나 아예 가스 지불을 롤업 프로토콜 외부로 옮겨서 사용자들이 별도 채널을 통해 배치 생성자들에게 지불할 수 있도록 할 수 있다.
+- Gas : Gasprice와 비슷하다.
+- To : 20bytes의 주소를 트리의 인덱스로 대체할 수 있다.
+- Value : 과학적 표기법(너무 크거나 작은 수를 십진법으로 편하게 작성하여 표현하는 방법)으로 값을 저장할 수 있다. 대부분의 경우 전송에는 1-3개의 유효 숫자만 필요하다.
+- Signature : BLS 집계 서명을 사용할 수 있다. 다수의 서명을 32~96bytes(프로토콜에 따라)의 단일 서명으로 결합할 수 있으며, 이 서명은 배치 내 전체 메시지와 발신자 집합에 대해 한꺼번에 검증 가능하다.
 
 
 
+##### 롤업의 확장성 이점
+
+----
+
+기존 이더리움 체인에서 가스 한도는 1,250만개이며 트랜잭션의 1byte 비용은 16 Gas이다. 즉 블록에 단일 배치만 포함된 경우(zk rollup 증명 검증 : 50만 gas 가정), 해당 배치는 (1250-50)만 / 16 = 75만 bytes의 데이터를 가질 수 있다. 트랜잭션 데이터 압축에서 말한 것처럼 ETH 전송을 위한 롤업에는 사용자 작업당 12bytes가 필요하므로, 배치에 최대 75만/12 = 62500개의 트랜잭션이 포함될 수 있다. 이는 현재 13초의 평균 블록 시간에서 ~4807 TPS로 변환된다.
+
+| Application                                       | Bytes in rollup                                              | Gas cost on layer 1                                          | Max scalability gain |
+| :------------------------------------------------ | :----------------------------------------------------------- | :----------------------------------------------------------- | :------------------- |
+| ETH transfer                                      | **12**                                                       | 21,000                                                       | 105x                 |
+| ERC20 transfer                                    | **16** (4 more bytes to specify which token)                 | ~50,000                                                      | 187x                 |
+| Uniswap trade                                     | **~14** (4 bytes sender + 4 bytes recipient + 3 bytes value + 1 byte max price + 1 byte misc) | ~100,000                                                     | 428x                 |
+| Privacy-preserving withdrawal (Optimistic rollup) | **296** (4 bytes index of root + 32 bytes nullifier + 4 bytes recipient + 256 bytes ZK-SNARK proof) | [~380,000](https://etherscan.io/tx/0x6e311f84655af72614966705584569b52d6e314f2d61b965db91db41fd01b1e1) | 77x                  |
+| Privacy-preserving withdrawal (ZK rollup)         | **40** (4 bytes index of root + 32 bytes nullifier + 4 bytes recipient) | [~380,000](https://etherscan.io/tx/0x6e311f84655af72614966705584569b52d6e314f2d61b965db91db41fd01b1e1) | 570x                 |
 
 
+
+여기서 eth2 데이터 샤딩이 도입되게 된다면, 초당 ~1398kb/s로 기존 이더리움 체인의 ~60kb/s에서 23배 개선되어 최대 100,000 TPS까지 처리할 수 있을 것으로 예측된다.
 
 
 
