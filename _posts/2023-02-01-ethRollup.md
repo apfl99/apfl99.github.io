@@ -2,7 +2,7 @@
 title: "DankSharding의 등장 배경"
 categories:
  - DankSharding
-tags: [Ethereum 2.0, Vitalik Buterin’s Endgame, A rollup-centric ethereum roadmap] 
+tags: [Ethereum 2.0, A rollup-centric ethereum roadmap, Rollup, Vitalik Buterin’s Endgame] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
@@ -139,13 +139,13 @@ Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는�
 
 ----
 
-![thiba6-3200051-large](../images/2023-02-01-ethRollup/thiba6-3200051-large.gif)
+![thiba6-3200051-large](../../images/2023-02-01-ethRollup/thiba6-3200051-large.gif)
 
-![thiba7-3200051-large](../images/2023-02-01-ethRollup/thiba7-3200051-large.gif)
+![thiba7-3200051-large](../../images/2023-02-01-ethRollup/thiba7-3200051-large.gif)
 
 첫 번째 그림이 유효한 상태 트리이고, 두 번째 그림과 같이 사기 트랜잭션이 발생했을 때, 검증자는 로컬 상태에서 게시된 트랜잭션을 재생하고 결과 상태 루트를 비교한다. 또한 불일치가 발견될 경우 검증자가 사기 증명을 트리거한다.
 
-사기 증명은 배치 자체(체인에 저장된 해시와 비교) 및 읽은 특정 계정을 증명하는 데 필요한 Merkle 트리의 일부로 배치를 실행하고 사후 상태 루트를 계산함으로써 진행되며,  계산된 사후 루트와 제공된 사후 상태 루트가 동일하지 않으면 사기 증명이 생성된다. 이 때, 롤업에 게시된 유효하지 않은 배치가 둘 이상인 경우 가장 오래된 배치가 유효하지 않음을 증명하는 것이 좋다.
+사기 증명은 배치 자체(체인에 저장된 해시와 비교) 및 읽은 특정 계정을 증명하는 데 필요한 Merkle 트리의 일부로 배치를 실행하고 사후 상태 루트를 계산함으로써 진행되며,  계산된 사후 루트와 제공된 사후 상태 루트가 동일하지 않으면 사기 증명이 생성된다. 
 
 
 
@@ -169,9 +169,7 @@ zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 �
 
 
 
-
-
-![1__uEWsd2qtyDbh6stbw86EQ](../images/2023-02-01-ethRollup/1__uEWsd2qtyDbh6stbw86EQ.webp)
+![1__uEWsd2qtyDbh6stbw86EQ](../../images/2023-02-01-ethRollup/1__uEWsd2qtyDbh6stbw86EQ.webp)
 
 - P(x) : Prover
 - V(x, z) : Verifier
@@ -181,28 +179,7 @@ zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 �
 
 위 정의를 보면, Prover의 Secret(x)에 대하여 Verifier가 z값에 따라 challenge하면서 해당 증명 과정을 기록한다. 이는 계속해서 Prover가 Challenge과정에서 올바른 답을 제공했다면, Verifier는 확률적으로 Prover가 secret을 가지고 있다고 확신할 수 있다.
 
-이를 이산 로그에 대입하여 실제 구현을 보면,
 
-- y : 주어진 값, p : large prime(소수), g : generator
-- Prover는 g^x(mod p) = y가 되는 x값(secret)을 알고 있으며, y값은 x값을 통해 구할 수 있다.
-- Prover는 사전에 y값을 Verifier에게 공유한다.
-- Prover는 모든 Verifier에게 x값을 알고 있다고 증명하고 싶지만 x값은 노출하지 않는다.
-
-에서 증명은
-
-1. Prover는 y = g^x(mod p)를 계산하여 Verifier에게 y값을 준다.
-2. Prover는 C = g^r(mod p)를 계산하여 C를 Verifier에게 주고, r 값은 공개하지 않는다. (r : random number)
-3. Verifier는 Prover에게 challenge value에 따라 r을 요청하거나, (x+r)(mod (p-1))을 요청한다.
-
-
-
-Verfier가 r을 요청한 경우, Verifier는 C를 알고 있기 때문에 r값을 통해 C를 계산하여 값을 비교하면 된다.
-
-![1_9rnL987k8cgjw3UiyTsoMg](../../images/2023-02-01-ethRollup/1_9rnL987k8cgjw3UiyTsoMg.webp)
-
-Verifier가 (x+r)(mod(p-1))을 요청한 경우, 1번과 2번을 통해 Verifier는 y값과 C값을 알고 있기 때문에 Verifier는 아래 식을 통해 비교하면 된다.
-
-![1_7yXNpiZqux4HoF7eoCpdUA](../../images/2023-02-01-ethRollup/1_7yXNpiZqux4HoF7eoCpdUA.webp)
 
 
 
