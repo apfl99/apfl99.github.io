@@ -144,9 +144,9 @@ Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는�
 
 ![thiba7-3200051-large](../../images/2023-02-01-ethRollup/thiba7-3200051-large.gif)
 
-첫 번째 그림이 유효한 상태 트리이고, 두 번째 그림과 같이 사기 트랜잭션이 발생했을 때, 검증자는 로컬 상태에서 게시된 트랜잭션을 재생하고 결과 상태 루트를 비교한다. 또한 불일치가 발견될 경우 검증자가 사기 증명을 트리거한다.
+첫 번째 그림이 유효한 상태 트리이고, 두 번째 그림과 같이 사기 트랜잭션이 발생했을 때, 검증자는 로컬 상태에서 게시된 트랜잭션을 시뮬레이션하고 결과 상태 루트를 비교한다. 또한 불일치가 발견될 경우 검증자가 사기 증명을 트리거한다.
 
-사기 증명은 배치 자체(체인에 저장된 해시와 비교) 및 읽은 특정 계정을 증명하는 데 필요한 Merkle 트리의 일부로 배치를 실행하고 사후 상태 루트를 계산함으로써 진행되며,  계산된 사후 루트와 제공된 사후 상태 루트가 동일하지 않으면 사기 증명이 생성된다. 
+사기 증명은 배치 자체(체인에 저장된 해시와 비교) 및 읽은 특정 계정을 증명하는 데 필요한 Merkle 트리의 일부(계정 주소 및 잔액나 스택 데이터)로 배치를 시뮬레이션하고 사후 상태 루트를 계산함으로써 진행되며,  계산된 사후 루트와 제공된 사후 상태 루트가 동일하지 않으면 사기 증명이 생성된다. 
 
 
 
@@ -154,7 +154,7 @@ Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는�
 
 ------
 
-zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 유효하다는 가정을 하지 않고, 트랜잭션 데이터와 함께 게시된 상태 루트가 정확하다는 증거를 제출한다. 이 증거는 ZK(Zero-Knowledge)를 활용한 암호화 도구를 사용하여 제작되며, Zero-Knowledge는 계산에 필요한 입력 데이터가 설득력을 갖기 위해 검증자와 공유할 필요가 없음을 의미한다. 따라서 검증자가 모든 계산을 스스로 수행하지 않고도 증명(Zero-Knowledge Proof)이 가능하다.
+ZK Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 유효하다는 가정을 하지 않고, 트랜잭션 데이터와 함께 게시된 상태 루트가 정확하다는 증거를 제출한다. 이 증거는 ZK(Zero-Knowledge)를 활용한 암호화 도구를 사용하여 제작되며, Zero-Knowledge는 계산에 필요한 입력 데이터가 설득력을 갖기 위해 검증자와 공유할 필요가 없음을 의미한다. 따라서 검증자가 모든 계산을 스스로 수행하지 않고도 증명(Zero-Knowledge Proof)이 가능하다.
 
 
 
@@ -191,6 +191,69 @@ Zero-Knowledge : 어떤 조건이 참일 때, verifier는 이 조건이 참이�
 - z : Verifier의 Challenge Value
 
 위 정의를 보면, Prover의 Secret(x)에 대하여 Verifier가 z값에 따라 challenge하면서 해당 증명 과정을 기록한다. 이는 계속해서 Prover가 Challenge과정에서 올바른 답을 제공했다면, Verifier는 확률적으로 Prover가 secret을 가지고 있다고 확신할 수 있다.
+
+
+
+##### 이산 로그를 활용한 ZKP 구현
+
+-----
+
+**이산 로그 문제(Discrete Logarithm Problem, DLP)**
+
+- "g, x, p를 가지고 y = g^x(mod p)를 구하는 것은 쉽지만, g, y, p를 가지고 x를 구하는 것은 어렵다" 라는 문제
+
+
+
+**ZKP 구현**
+
+- y: 주어진 값, p: larger prime(소수), g: generator
+
+- Prover는 g^x(mod p) = y가 되는 x값(secret)을 알고 있으며, y값은 x값을 통해 구할 수 있다.
+- Prover는 사전에 y값을 Verifier에게 공유한다.
+- Prover는 모든 Verifier에게 x값을 알고 있다고 증명하고 싶지만, x값은 노출하고 싶지 않다.
+
+이 상황에서 Prover는 다음과 같은 과정을 통해 Verifier에게 secret 정보를 알리지 않고, secret을 가지고 있음을 증명할 수 있다.
+
+1. Prover는 y = g^x(mod p)를 계산하여 Verifier에게 y값을 준다.
+2. Prover는 C = g^r(mod p)를 계산하여 C를 Verifier에게 주고, r값은 공개하지 않는다. (r : random number)
+3. Verifier는 Prover에게 r을 요청하거나, (x+r)(mod(p-1))을 요청한다. (Challenge 0 or 1)
+
+
+
+- Verifier가 r을 요청한 경우 Verifier는 C는 알고 있기 때문에 r값을 통해 C를 계산하여 값을 비교하고 Prover가 secret을 가지고 있음을 증명할 수 있다.
+
+![1_9rnL987k8cgjw3UiyTsoMg](../../images/2023-02-01-ethRollup/1_9rnL987k8cgjw3UiyTsoMg-6013212.webp)
+
+{: .align-center}
+
+- Verifier가 (x+r)(mod(p-1))을 요청한 경우, 1번 2번을 통해 Verifier는 y값과 C값을 알고 있기 때문에 Verifier는 아래 식을 통해 Prover가 secret을 가지고 있음을 증명할 수 있는 동시에, (x+r)(mod(p-1))을 통해 Prover가 가진 x값을 유추하기 어렵게 만들 수 있다.
+
+![1_7yXNpiZqux4HoF7eoCpdUA](../../images/2023-02-01-ethRollup/1_7yXNpiZqux4HoF7eoCpdUA-6013230.webp)
+
+{: .align-center}
+
+
+
+**(C*y)mod p === g^(x+r)mod(p-1)mod p 증명(===을 합동으로 대신)**
+
+1. a === b(mod m)이고 c === d (mod m)이면 ac = bd(mod m)이다.(모듈러 연산 곱셈 성질)
+   - (C * y) = (g^x * g^r)(mod p)
+   - (C * y) (mod p) = (g^x * g^r) (mod p)(mod p) = (g^x * g^r) (mod p) (=>mod 연산 두 번은 한 번과 같음) 
+2. 모듈러 연산은 p를 주기로 해서 순환군을 가지기 때문에, 거듭 연산시지수의 합에 mod(p-1)을 취하면 결과가 같다.
+
+![스크린샷 2023-02-10 오후 5.01.21](../../images/2023-02-01-ethRollup/스크린샷 2023-02-10 오후 5.01.21-6017506.png)
+
+{: .align-center}
+
+- 위는 g가 2이고 p가 13인 요소와 거듭 연산 결과인데, 이는 p-1, 즉 12의 배수마다 항등원이 된다. (지수 e가 12의 배수라면 g^e는 항상 1)
+
+  따라서 p-1 = 12를 주기로 계속해서 계속 순환되기 때문에 g^a * g^b = g^((a+b)(mod p-1))이 성립된다.
+
+  - 그러므로 1번을 대입하면  (g^x * g^r) (mod p)  = g^((x+r)(mod p-1)) (mod p) 이므로 2번에 의해 증명식은 성립된다.
+
+![prf](../../images/2023-02-01-ethRollup/prf.jpg)
+
+{: .align-center}
 
 
 
@@ -242,7 +305,7 @@ Zero-Knowledge : 어떤 조건이 참일 때, verifier는 이 조건이 참이�
 
 
 
-## EndGame
+## Data Sharing
 
 
 
@@ -278,11 +341,8 @@ Zero-Knowledge : 어떤 조건이 참일 때, verifier는 이 조건이 참이�
     <br>
     6) <a>https://medium.com/decipher-media/zero-knowledge-proof-chapter-1-introduction-to-zero-knowledge-proof-zk-snarks-6475f5e9b17b</a>
     <br>
-    7) <a></a>
+    7) <a>http://blog.onther.io/ethereum/scalability/zkp/Zero-Knowledge-Proof-step1/</a>
 <div>
-​				
-​				
-​						
-​				
-​			
+
+​	
 
