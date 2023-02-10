@@ -12,6 +12,7 @@ search: true #검색 피하기
 
 
 
+
 ---
 
 # DankSharding의 등장 배경
@@ -66,7 +67,7 @@ search: true #검색 피하기
 
 경제적 지속 가능성은 Layer 2 프로토콜을 활용하는데에서 나오는 장점으로
 
-1. Gitcoin Grants 또는 Ethereum Foundation과 같은 일반적인 공익 자금 조달 기관에서 처리할 수 있지만 이러한 메커니즘 규모는 이 수준의 자금 조달을 처리하기에 충분하지 않지만, 자체 토큰을 출시하는 Layer 2 프로젝트는 L2가 캡처한 미래 수수료 예측에 의하면 충분하다.
+1. Gitcoin Grants 또는 Ethereum Foundation과 같은 일반적인 공익 자금 조달 기관에서 처리할 수 있지만 이러한 메커니즘 규모는 이 수준의 자금 조달을 처리하기에 충분하지 않지만, 자체 토큰을 출시하는 Layer 2 프로젝트는 L2가 캡처한 미래 수수료 예측에 의해 자금 조달을 하면 충분하다.
 2. 이더리움은 믿을 수 있을 만큼 중립적이어야 하는 필요성이 있어 프로토콜 내 공공재 자금 조달을 어렵게 하지만, L2는 자체 공공재 자금 조달 메커니즘을 가지고 있기 때문에 이더리움의 장기적인 경제적 지속 가능성을 위해 좋을 수 있다.
 3. Layer 2의 플랫폼 프로젝트에서 자체적인 지역 경제의 활성화와 기술 자율성을 유지하는, 보다 다양한 사람들에게 명확한 기회를 제공한다.
 
@@ -125,7 +126,7 @@ Layer 2에서 거래하기 위해 사용자는 직접하거나 Layer 1 Smart Con
 
 #### Optimistic Rollup
 
----
+------
 
 Optimistic Rollup에서 Aggregators는 Off Chain Tx를 실행하고 트랜잭션 데이터와 새로운 상태 루트를 게시한다. 여기에는 유효성 증명은 포함되어 있지 않으며 계층 1 및 2 노드는 이 행위자가 실행한 계산이 유효하다는 가정한다. 따라서 Main Chain의 노드는 새로운 Batch가 게시될 때마다 모든 트랜잭션을 처리할 필요가 없어 Layer 1의 노드 부하가 줄어든다.
 
@@ -137,7 +138,7 @@ Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는�
 
 ##### 분쟁 단계 : 사기 증명
 
-----
+------
 
 ![thiba6-3200051-large](../../images/2023-02-01-ethRollup/thiba6-3200051-large.gif)
 
@@ -151,15 +152,27 @@ Optimistic Rollup에는 Aggregators와 Verifier라는 행위자가 존재하는�
 
 #### ZK Rollup
 
-----
+------
 
-zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 유효하다는 가정을 하지 않고, 트랜잭션 데이터와 함꼐 게시된 상태 루트가 정확하다는 증거를 제출한다. 이 증거는 ZK(Zero-Knowledge)를 활용한 암호화 도구를 사용하여 제작되며, Zero-Knowledge는 계산에 필요한 입력 데이터가 설득력을 갖기 위해 검증자와 공유할 필요가 없음을 의미한다. 따라서 검증자가 모든 계산을 스스로 수행하지 않고도 증명(Zero-Knowledge Proof)이 가능하다.
+zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 유효하다는 가정을 하지 않고, 트랜잭션 데이터와 함께 게시된 상태 루트가 정확하다는 증거를 제출한다. 이 증거는 ZK(Zero-Knowledge)를 활용한 암호화 도구를 사용하여 제작되며, Zero-Knowledge는 계산에 필요한 입력 데이터가 설득력을 갖기 위해 검증자와 공유할 필요가 없음을 의미한다. 따라서 검증자가 모든 계산을 스스로 수행하지 않고도 증명(Zero-Knowledge Proof)이 가능하다.
+
+
+
+##### ZKP(Zero-Knowledge Proof)의 Property
+
+---
+
+Completeness : 어떤 조건이 참이라면, honest verifier는 honest prover에 의해 이 사실을 납득할 수 있다.
+
+Soundness : 어떤 조건이 거짓이라면, dishonest prover는 거짓말을 통해 verifier에게 조건이 참임을 절대 납득시킬 수 없다.
+
+Zero-Knowledge : 어떤 조건이 참일 때, verifier는 이 조건이 참이라는 사실이외의 정보를 아무것도 알 수 없다.
 
 
 
 ##### ZKP(Zero-Knowledge Proof) formal definition 
 
-----
+------
 
 - Prover : 자신이 가지고 있는 정보가 무엇인지 공개하지 않고, Verifier에게 정보를 알고 있다는 것을 증명하고 싶은 참여자
 - Verifier : Prover가 해당 정보를 가지고 있음을 검증하고 싶은 참여자
@@ -183,7 +196,7 @@ zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 �
 
 ##### 트랜잭션 데이터 압축
 
-----
+------
 
 원래 ETH 전송 트랜잭션은 ~110bytes를 사용하지만, Rollup에서의 트랜잭션은 ~12bytes를 사용할 수 있다.
 
@@ -209,7 +222,7 @@ zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 �
 
 ##### 롤업의 확장성 이점
 
-----
+------
 
 기존 이더리움 체인에서 가스 한도는 1,250만개이며 트랜잭션의 1byte 비용은 16 Gas이다. 즉 블록에 단일 배치만 포함된 경우(zk rollup 증명 검증 : 50만 gas 가정), 해당 배치는 (1250-50)만 / 16 = 75만 bytes의 데이터를 가질 수 있다. 트랜잭션 데이터 압축에서 말한 것처럼 ETH 전송을 위한 롤업에는 사용자 작업당 12bytes가 필요하므로, 배치에 최대 75만/12 = 62500개의 트랜잭션이 포함될 수 있다. 이는 현재 13초의 평균 블록 시간에서 ~4807 TPS로 변환된다.
 
@@ -251,23 +264,25 @@ zk Rollup은 Optimistic Rollup과 다르게 Aggregator는 실행한 계산이 �
 
 
 
-
-
 <div class="notice">
-  <h5>Reference</h5>
-  1) <a>https://docs.google.com/presentation/d/1G5UZdEL71XAkU5B2v-TC3lmGaRIu2P6QSeF8m3wg6MU/edit#slide=id.g3bd8f42e24_0_167</a>
-  <br>
-  2) <a>https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698</a>
-  <br>
-  3) <a>https://ieeexplore.ieee.org/abstract/document/9862815</a>
-  <br>
-  4) <a>https://vitalik.ca/general/2021/01/05/rollup.html</a>
-  <br>
-  5) <a>https://hyun-jeong.medium.com/h-3c3d45861ced</a>
-  <br>
-  6) <a></a>
-  <br>
-  7) <a></a>
-  <br>
-  8) <a></a>
-</div>
+    <h5>Reference</h5>
+    1) <a>https://docs.google.com/presentation/d/1G5UZdEL71XAkU5B2v-TC3lmGaRIu2P6QSeF8m3wg6MU/edit#slide=id.g3bd8f42e24_0_167</a>
+    <br>
+    2) <a>https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698</a>
+    <br>
+    3) <a>https://ieeexplore.ieee.org/abstract/document/9862815</a>
+    <br>
+    4) <a>https://vitalik.ca/general/2021/01/05/rollup.html</a>
+    <br>
+    5) <a>https://hyun-jeong.medium.com/h-3c3d45861ced</a>
+    <br>
+    6) <a>https://medium.com/decipher-media/zero-knowledge-proof-chapter-1-introduction-to-zero-knowledge-proof-zk-snarks-6475f5e9b17b</a>
+    <br>
+    7) <a></a>
+<div>
+​				
+​				
+​						
+​				
+​			
+
