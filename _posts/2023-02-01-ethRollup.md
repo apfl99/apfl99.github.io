@@ -239,7 +239,7 @@ Zero-Knowledge : 어떤 조건이 참일 때, verifier는 이 조건이 참이�
 1. a === b(mod m)이고 c === d (mod m)이면 ac = bd(mod m)이다.(모듈러 연산 곱셈 성질)
    - (C * y) = (g^x * g^r)(mod p)
    - (C * y) (mod p) = (g^x * g^r) (mod p)(mod p) = (g^x * g^r) (mod p) =>mod 연산 두 번은 한 번과 같음.
-2. 모듈러 연산은 p를 주기로 해서 순환군을 가지기 때문에, 거듭 연산시지수의 합에 mod(p-1)을 취하면 결과가 같다.
+2. 모듈러 연산은 p를 주기로 해서 순환군을 가지기 때문에, 거듭 연산시 지수의 합에 mod(p-1)을 취하면 결과가 같다.
 
 ![p1](../../images/2023-02-01-ethRollup/p1.png)
 
