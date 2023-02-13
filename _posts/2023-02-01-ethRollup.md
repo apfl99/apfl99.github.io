@@ -303,7 +303,7 @@ Zero-Knowledge : 어떤 조건이 참일 때, verifier는 이 조건이 참이�
 
 
 
-## Data Sharing
+## Data Sharding
 
 
 
