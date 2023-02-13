@@ -305,7 +305,27 @@ Zero-Knowledge : 어떤 조건이 참일 때, verifier는 이 조건이 참이�
 
 ## Data Sharding
 
+위와 같은 이유로 기존의 Shard Chain은 트랜잭션 실행과 Smart Contract 연산의 Execution Layer가 아닌 Data Availability Layer로 사용하기로 하였다.
 
+
+
+### Data Availability
+
+---
+
+
+
+
+
+
+
+
+
+이에 비탈릭 부테린은 Sharding과 데이터 가용성 검사를 위한 DAS를 제안했다.
+
+### An explanation of the sharding + DAS proposal
+
+---
 
 
 
