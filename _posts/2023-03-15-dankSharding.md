@@ -103,7 +103,7 @@ Layer 2의 Aggregator와 샤드의 Proposer는 머클 루트를 계산하기 위
 
 따라서 이러한 문제와 같이 검증자가 전달받은 데이터가 정상 상태인지 유효한지 판단하는 문제를 데이터 가용성 문제라고 하며, 이를 해결하기 위해 Shard Chain에서는 
 
-![image-20230316133015294](../images/2023-03-15-dankSharding/image-20230316133015294.png)
+![image-20230316133015294](../../images/2023-03-15-dankSharding/image-20230316133015294.png)
 
 이와 같은 Origin Data, Erasure Coding으로 확장된 데이터, Merkle Proof로 구성된 Body와 KZG commitment, 제안자의 서명 등으로 구성된 Header의 구조를 가진 Blob 형태의 데이터를 사용한다.
 
