@@ -152,7 +152,7 @@ KZG commitment는 증명자가 commitment 값인 타원곡선 점을 검증자�
 
 
 
-### Process
+### DankSharding 등장
 
 ---
 
