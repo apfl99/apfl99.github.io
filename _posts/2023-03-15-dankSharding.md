@@ -48,9 +48,9 @@ DankSharding은 이더리움의 계층 중 데이터 가용성 계층에 해당�
 
 ## Ethereum Layer
 
-이에 현재 이더리움의 방향은 롤업 중점의 로드맵인데, 롤업은 다음과 같이
+이에 현재 이더리움의 방향은 롤업 중점의 로드맵인데, 롤업(Rollup)은 다음과 같이
 
-![image-20230315145842137](../images/2023-03-15-dankSharding/image-20230315145842137.png) 
+![image-20230315145842137](../../images/2023-03-15-dankSharding/image-20230315145842137.png) 
 
 외부 체인(Layer 2)에서 트랜잭션을 실행하고 메인 체인(Ethereum, Layer 1)으로 수백 개의 압축된 트랜잭션 모음과 증명이나 서명을 Layer 1의 트랜잭션 CallData 영역에 게시함으로써 메인 체인의 보안을 상속받는 솔루션으로, 현재 이더리움에 도입 시, 
 
@@ -99,16 +99,51 @@ DankSharding은 이더리움의 계층 중 데이터 가용성 계층에 해당�
 
 ![image-20230316120421999](../../images/2023-03-15-dankSharding/image-20230316120421999.png)
 
-Layer 2의 Aggregator와 샤드의 Proposer는 머클 루트를 계산하기 위한 D, H(A-B), H(A-H)를 게시한다. 그러나 이 때 악의적인 Aggregator나 Proposer가 H(E-H)를 게시하지 않고 데이터 가용성이 고려되지 않는다면, 롤업에서의 Layer 1 검증자나 샤드의 검증자는 우선 전달받은 데이터를 검증할 것이고, 해당 검증은 유효하지 않을 뿐더러 DoS 공격과 같은 자원낭비 문제를 발생할 수 있다.
+Layer 2의 Aggregator와 샤드의 Proposer는 머클 루트를 계산하기 위한 D, H(A-B), H(E-H)를 게시한다. 그러나 이 때 악의적인 Aggregator나 Proposer가 H(E-H)를 게시하지 않는 상황에서 데이터 가용성이 고려되지 않는다면, 롤업에서의 Layer 1 검증자나 샤드의 검증자는 우선 전달받은 데이터로 H(A-H)를 재계산할 것이고, 해당 검증은 유효하지 않을 뿐더러 DoS 공격과 같은 자원낭비 문제를 발생할 수 있다.
 
-따라서 이러한 문제와 같이 검증자가 전달받은 데이터가 정상 상태인지 유효한지 판단하는 문제를 데이터 가용성 문제라고 하며, 이를 해결하기 위해 Shard Chain에서는 
+따라서 이러한 문제와 같이 검증자가 전달받은 데이터가 정상 상태인지 유효한지 판단하는 문제를 데이터 가용성 문제라고 하며, 이를 해결하기 위해 Shard Chain에서는
 
 ![image-20230316133015294](../../images/2023-03-15-dankSharding/image-20230316133015294.png)
 
-이와 같은 Origin Data, Erasure Coding으로 확장된 데이터, Merkle Proof로 구성된 Body와 KZG commitment, 제안자의 서명 등으로 구성된 Header의 구조를 가진 Blob 형태의 데이터를 사용한다.
+이와 같은 Origin Data, Erasure Coding으로 확장된 데이터, Merkle Proof로 구성된 Body와 KZG commitment으로 생성된 KZG Root으로 구성된 Header의 구조를 가진 Blob 형태의 데이터를 사용한다.
 
 
 
 ### Blob
 
 ---
+
+Shard Chain의 데이터 형태인 Blob은 데이터 가용성 문제를 해결하기 위한 대책인 DAS(Data Availability Sampling)를 도입하기 위한 자료 구조이다.
+
+DAS란 데이터 가용성을 보장하기 위한 메커니즘으로, 다음과 같이 수행되는데
+
+![image-20230316141439413](../../images/2023-03-15-dankSharding/image-20230316141439413.png)
+
+여기서 Blob은 아직 Shard Chain에서 사용되는 Blob이 아닌 블록을 임의의 길이를 가진 문자열과 배열을 인코딩하는 방식인 RLP(Recursive Length Prefix)인코딩을 통해 직렬화한 후, 이진데이터로 나타내서 잘라낸 것으로 다음과 같이 나타내며,
+
+![blob](../../images/2023-03-15-dankSharding/blob.png)
+
+해당 Blob을 통해 검증자(Client)는 여러 라운드에 거쳐 임의의 인덱스를 뽑아 다운로드함으로써 데이터의 절반 이상이 가용한지 확인한다.
+
+이를 통해 DAS는 통계적인 보증을 제공하지만 여전히 샘플링에 의해 검열되지 않은 데이터가 남아있을 수 있다. 따라서 데이터를 확장함으로써 데이터 일부가 손실되어도 나머지 데이터로 원래 데이터를 복구할 수 있도록하여 샘플링에 의해 검열되지 않은 데이터가 생길 확률을 줄이는 Erasure Coding과 Erasure Coding에서 확장한 데이터가 올바르게 확장되었는지에 대한 증명인 KZG commitment를 사용한다.
+
+
+
+#### Erasure Coding
+
+----
+
+
+
+
+
+#### KZG commitment
+
+----
+
+
+
+
+
+
+
