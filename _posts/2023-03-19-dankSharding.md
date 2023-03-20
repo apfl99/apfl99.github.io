@@ -42,7 +42,7 @@ DankSharding이란 다음과 같이 이더리움이 확장성 개선을 위해 �
 
 ![image-20230315175327381](../../images/2023-03-19-dankSharding/image-20230315175327381.png)
 
-DankSharding은 기존의 샤딩인 각 샤드마다 해당 샤드의 모든 데이터를 다운로드한 별도의 제안자와 위원회를 통해 해당 샤드의 실행 데이터를 검증한 후, 합의 결과 및 실행 데이터를 합의 계층인 Beacon Chain의 제안자가 집계하여 Beacon Chain에 제안하는 방식에서 생기는 합의 시간에 대한 엄격한 동시성을 갖추기 위한 복잡한 디자인 및 네트워크 딜레이 문제를 개선하고자, 각 샤드는 해당 샤드의 롤업에서 실행된 데이터에 대한 데이터 가용성 증명을 포함한 Blob이라는 데이터를 생성하여 제안 및 위원회에서 검증하고, Beacon Block에 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고 Blob을 통해 해당 Beacon Block에 포함되는 실행 데이터에 대한 데이터 가용성 증명을 할 수 있도록 하였다.
+DankSharding은 기존 데이터 샤딩의 각 샤드마다 해당 샤드의 모든 데이터를 다운로드한 별도의 제안자와 위원회를 통해 해당 샤드의 실행 데이터를 검증한 후, 합의 결과 및 실행 데이터를 합의 계층인 Beacon Chain의 제안자가 집계하여 Beacon Chain에 제안하는 방식에서 생기는 합의 시간에 대한 엄격한 동시성을 갖추기 위한 복잡한 디자인 및 네트워크 딜레이 문제를 개선하고자, 각 샤드는 해당 샤드의 롤업에서 실행된 데이터에 대한 데이터 가용성 증명을 포함한 Blob이라는 데이터를 생성하여 제안 및 위원회에서 검증하고, Beacon Block에 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고 Blob을 통해 해당 Beacon Block에 포함되는 실행 데이터에 대한 데이터 가용성 증명을 할 수 있도록 하였다.
 
 
 
@@ -201,3 +201,50 @@ DankSharding은 앞선 데이터 가용성 연구를 토대로, 다음과 같이
 
 
 
+<div class="notice">
+  <h5>Reference</h5>
+  1) <a>What you can do for Ethereum 2.0 a.k.a. sharding - Hsiao-Wei Wang</a>
+  <br>
+  2) <a>Dude, What's the Danksharding situation? Workshop - Dankrad Feist</a>
+  <br>
+  3) <a>https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698</a>
+  <br>
+  4) <a>Thibault, Louis Tremblay, Tom Sarry, and Abdelhakim Senhaji Hafid. "Blockchain scaling using rollups: A comprehensive survey." IEEE Access (2022).</a>
+  <br>
+  5) <a>Lavaur, Thomas, Jérôme Lacan, and Caroline PC Chanel. "Enabling Blockchain Services for IoE with Zk-Rollups." Sensors 22.17 (2022): 6493.</a>
+  <br>
+  6) <a>https://members.delphidigital.io/reports/the-hitchhikers-guide-to-ethereum/#in-protocol-proposer-builder-separation</a>
+  <br>
+  7) <a>Scalability and Asynchronous Programming - Vitalik vbuterin</a>
+  <br>
+  8) <a>https://vitalik.ca/general/2021/01/05/rollup.html</a>
+  <br>
+  9) <a>https://github.com/ethereum/research/wiki/A-note-on-data-availability-and-erasure-coding</a>
+  <br>
+  10) <a>https://ethereum.org/en/developers/docs/data-availability/</a>
+  <br>
+  11) <a>Al-Bassam, Mustafa, Alberto Sonnino, and Vitalik Buterin. "Fraud and data availability proofs: Maximising light client security and scaling blockchains with dishonest majorities." arXiv preprint arXiv:1809.09044 (2018).</a>
+  <br>
+  12) <a>https://ethereum.org/en/developers/tutorials/merkle-proofs-for-offline-data-integrity/</a>
+  <br>
+  13) <a>https://hackmd.io/@vbuterin/sharding_proposal</a>
+  <br>
+  14) <a>https://ethresear.ch/t/blob-serialisation/1705</a>
+  <br>
+  15) <a>What are Reed-Solomon Codes? – vcubingx</a>
+  <br>
+  16) <a>https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html</a>
+  <br>
+  10) <a></a>
+  <br>
+  10) <a></a>
+  <br>
+  10) <a></a>
+  <br>
+  10) <a></a>
+  <br>
+  10) <a></a>
+  <br>
+  10) <a></a>
+  <br>
+</div>
