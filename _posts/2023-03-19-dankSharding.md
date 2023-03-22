@@ -64,7 +64,7 @@ DankSharding 이전의 샤딩은 이더리움의 확장성 솔루션으로, 다�
 
 ![image-20230320002942785](../../images/2023-03-19-dankSharding/image-20230320002942785.png)
 
- 외부 체인(Layer 2)에서 실행한 압축된 트랜잭션 모음과 증명(롤업 데이터)을 Ethereum의 트랜잭션 Calldata 영역에 게시함으로써 이더리움의 보안을 상속받는 솔루션인 롤업이 등장하고, 
+ 외부 체인(Layer 2)에서 실행한 압축된 트랜잭션 모음과 Layer 2의 State Root로 구성된 Batch을 Ethereum의 트랜잭션 Calldata 영역에 게시함으로써 이더리움의 보안을 상속받는 확장성 솔루션인 롤업이 등장하고 도입 시, 
 
 - 현재 이더리움 블록당 가스 한도: 1250만개
 
@@ -82,9 +82,9 @@ DankSharding 이전의 샤딩은 이더리움의 확장성 솔루션으로, 다�
 
 => **TPS: 62,500/13 = ~4807TPS**
 
-위와 같이 확장성 성능 지표인 TPS(Transaction Per Second)에서 우수한 결과를 보여주면서 이더리움은 롤업 중점의 로드맵을 예정했다.
+위와 같이 확장성 성능 지표인 TPS(Transaction Per Second)에서 우수한 예측 결과를 보여주면서 이더리움은 롤업 중점의 로드맵을 예정했다.
 
-이에 샤딩의 역할은 데이터 처리가 아닌, Layer 1에서 검증을 위한 롤업 데이터가 가용한가에 대한 데이터 가용성 문제에 중점을 두었고,  데이터 가용성 문제는 이더리움에서 롤업이 아니더라도 최신 블록 헤더에만 동기화하고 블록 전체 데이터를 가진 풀 노드에서 다른 정보를 요청하는 이더리움 노드인 라이트 클라이언트가 전체 노드로 부터 받은 데이터에 대한 가용성 증명을 연구하고 있었기에 앞서 연구된 데이터 가용성 증명 개념을 활용하여 데이터 가용성 증명을 효율적으로 할 수 있는 샤딩 디자인인 DankSharding이 등장하였다.
+이에 샤딩의 역할은 데이터 처리가 아닌, 롤업에서 Layer 1에서 검증을 위해 Layer 2로 게시한 데이터인 Batch가 가용한가에 대한 데이터 가용성 문제에 중점을 두었고,  데이터 가용성 문제는 이더리움에서 롤업이 아니더라도 최신 블록 헤더에만 동기화하고 블록 전체 데이터를 가진 풀 노드에서 다른 정보를 요청하는 이더리움 노드인 라이트 클라이언트가 전체 노드로 부터 받은 데이터에 대한 가용성 증명을 연구하고 있었기에 앞서 연구된 데이터 가용성 증명 개념을 활용하여 데이터 가용성 증명을 효율적으로 할 수 있는 샤딩 디자인인 DankSharding이 등장하였다.
 
 
 
@@ -94,7 +94,7 @@ DankSharding 이전의 샤딩은 이더리움의 확장성 솔루션으로, 다�
 
 ----
 
-DankSharding이란 다음과 같이 이더리움이 확장성 개선을 위해 도입 예정이었던 VM 실행 데이터를 처리하는 데이터 샤딩에서 롤업 중점의 로드맵으로 전환함에 따라 롤업 데이터의 데이터 가용성 증명을 위해 제안된 샤딩 디자인이다. 
+DankSharding이란 다음과 같이 이더리움이 확장성 개선을 위해 도입 예정이었던 VM 실행 데이터를 처리하는 데이터 샤딩에서 롤업 중점의 로드맵으로 전환함에 따라 Batch의 데이터 가용성 증명을 위해 제안된 샤딩 디자인이다. 
 
 ![image-20230319232717880](../../images/2023-03-19-dankSharding/image-20230319232717880.png)
 
@@ -104,7 +104,7 @@ DankSharding이란 다음과 같이 이더리움이 확장성 개선을 위해 �
 
 데이터 가용성 측면에서 봤을 때, 기존의 샤딩은 왼쪽과 같이 실행 데이터 검증을 위해 위원회의 검증자들은 각 샤드마다 해당 샤드의 모든 데이터를 다운로드함으로써 데이터 가용성을 확인했다면, 
 
-DankSharding은 블록을 만드는 빌더를 제안자와 분리하여 따로 두고, 빌더는 Beacon 블록과 함께 각 샤드의 롤업 데이터로 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고 빌더가 생성한 Blob을 각 샤드 검증자들로 구성된 위원회가 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
+DankSharding은 블록을 만드는 빌더를 제안자와 분리하여 따로 두고, 빌더는 Beacon 블록과 함께 각 샤드의 Batch로 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고 빌더가 생성한 Blob을 각 샤드 검증자들로 구성된 위원회가 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
 
 
 
@@ -139,7 +139,7 @@ DankSharding은 블록을 만드는 빌더를 제안자와 분리하여 따로 �
 
 루트값을 계산하기 위한 H(D), H(C-D), H(A-B), H(E-H)를 풀 노드로부터 제공받아 계산 결과값과 자신이 가진 블록 헤더인 H(A-H)값이 일치하는지를 통해 증명한다.
 
-그러나 해당 상황에서 만약 악의적인 풀 노드가 H(E-H)를 제외하고 라이트 클라이언트에게 전송한다면, 라이트 클라이언트는 우선 전달받은 데이터로 유효하지 않은 검증을 할 뿐만 아니라 DoS와 같은 자원낭비 문제를 초래할 수 있다.
+그러나 해당 상황에서 만약 악의적인 풀 노드가 H(E-H)를 제외하고 라이트 클라이언트에게 전송한다면, 라이트 클라이언트는 우선 전달받은 데이터로 최대 H(A-D)까지 계산할 수 있기 때문에 유효하지 않은 검증을 할 뿐만 아니라 DoS와 같은 자원낭비 문제를 초래할 수 있다.
 
 이와 같이 전체 데이터가 아닌 일부 데이터를 가진 노드가 현재 사용되는 데이터가 사용가능한 데이터인지 알 수 없는 문제를 데이터 가용성 문제라고 하며, 이를 Fisherman's Dilemma로 확장하면 다음과 같이
 
@@ -202,9 +202,9 @@ Erasure Coding에는 Reed-Solomon Code를 활용하는데, Reed-Solomon Code는
 
 ---
 
-KZG commitment는 증명자가 commitment 값인 타원곡선 점을 검증자에게 보낸 후, 증명자는 작업 중인 다항식을 변경할 수 없기 때문에 이를 commitment라고 하며, 하나의 다항식에 대해서만 유효성 증명이 가능한 특성을 활용하여 증명자가 제공하는 데이터(확장된 데이터)가 같은 다항식 내에 존재하는지 확인한다.
+KZG commitment는 Prover가 commitment 값인 타원곡선 점을 Verifier에게 보낸 후, Prover는 작업 중인 다항식을 변경할 수 없기 때문에 이를 commitment라고 하며, 하나의 다항식에 대해서만 유효성 증명이 가능한 특성을 활용하여 Erasure Coding으로 확장된 데이터가 같은 다항식 내에 존재하는지 확인한다.
 
-KZG commitment는 이미 정의된 페어링된 타원곡선을 사용하는데, 이는 다음과 같이 이미 정의된 페어링된 타원곡선의 성질을 이용하여, 
+KZG commitment에는 암호학적 성질을 부여하기 위해 이미 정의된 페어링된 타원곡선을 사용하는데, 이는 다음과 같이 이미 정의된 페어링된 타원곡선의 성질을 이용하여, 
 
 ![kzgcommitment](../../images/2023-03-19-dankSharding/kzgcommitment.png)
 
@@ -227,6 +227,43 @@ Verifier는 Prover로부터 Commitment와 Proof를 받으면, 자신이 증명�
 
 
 ## Rollup
+
+Rollup이란 Layer 2 확장성 솔루션으로, 다음과 같이 
+
+![img](../../images/2023-03-19-dankSharding/access-gagraphic-3200051-20230322174302164.jpg)
+
+이더리움의 User는 Smart Contract를 통해 롤업 프로젝트에 예치함으로써 Layer 2에 참여하게 되고, Layer 2에서 발생한 트랜잭션은 Layer 2의 Aggregator를 통해 트랜잭션에 대한 증명과 함께 Layer 1의 Smart Contract에 게시함으로써 이더리움의 보안을 상속받는다.
+
+Layer 2에서 Layer 1으로 게시하는 과정을 보면 DankSharding의 등장배경에서 봤던 것과 같이 
+
+![image-20230320002942785](../../images/2023-03-19-dankSharding/image-20230320002942785.png)
+
+외부 체인(Layer 2)에서 Aggregator를 통해 실행한 압축된 트랜잭션 모음과 Layer 2의 State Root로 구성된 Batch을 Ethereum의 트랜잭션 Calldata 영역에 게시하며, 여기서 Aggregator가 게시한 Batch의 상태 루트가 유효한지 증명하는 방식에 따라 Optimisitic Rollup과 ZK Rollup으로 나뉜다.
+
+
+
+
+
+### Optimistic Rollup
+
+---
+
+Optimistic Rollup은 사기 증명을 통해 Layer 2에서 올린 상태 루트가 유효한지 증명한다.
+
+사기 증명을 위하여 Layer 2에서는 다음과 같이 
+
+![img](../../images/2023-03-19-dankSharding/tree.png)
+{: .align-center}
+
+Pre-state root로부터 Post-state root가 재계산되기 위한 녹색 데이터를 제공하고, 이를 일정 기간을 두고 Layer 2가 올린 Batch가 유효한지 검증함으로써 사기 증명이 이루어진다. 이때, 만약 재계산된 Post-state root가 Batch의 Post-state root와 일치하지 않을 경우, Layer 2는 트랜잭션을 다시 실행하고 그에 따라 해당 Batch를 게시한 Aggregator는 패널티를 받는다.
+
+
+
+
+
+### ZK rollup
+
+----
 
 
 
@@ -298,16 +335,16 @@ DankSharding은 앞선 데이터 가용성 연구를 토대로, 다음과 같은
   <br>
   16) <a>https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html</a>
   <br>
-  10) <a></a>
+  17) <a>https://ethereum.org/en/layer-2/#what-is-layer-2</a>
   <br>
-  10) <a></a>
+  18) <a>https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/</a>
   <br>
-  10) <a></a>
+  19) <a>https://ethereum.org/en/developers/docs/scaling/zk-rollups/</a>
   <br>
-  10) <a></a>
+  20) <a></a>
   <br>
-  10) <a></a>
+  21) <a></a>
   <br>
-  10) <a></a>
+  22) <a></a>
   <br>
 </div>
