@@ -38,7 +38,7 @@ search: true #검색 피하기
   - PBS
   - 2D KZG Scheme
 
-- Summary & Advantages, 현 상황
+- 현 상황
 
 
 
@@ -317,7 +317,17 @@ DankSharding은 앞선 연구를 토대로, 다음과 같은 구조를 갖는데
 
 이는 Beacon 블록과 함께 각 샤드의 데이터로 데이터 가용성 증명을 위한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고, 각 샤드의 검증자들이 Blob을 통해 각 샤드의 검증자들이 데이터 가용성 증명을 검증한다.
 
-이러한 구조가 도입되기 위해 DankSharding에서는 두가지 개념을 도입하는데, 첫번째는 기존의 블록에서 Blob 데이터가 추가되어 블록 사이즈가 커지고 블록을 제안하기 위한 노드의 하드웨어 요구사항이 증가함에 따라, 블록 제안의 중앙화를 방지하기 위해 블록을 생성하는 Builder와 블록을 제안하는 Proposer를 따로 두는 PBS(Proposer-Builder Separation)과 두번째는 데이터 가용성 증명을 위해 
+이러한 구조가 도입되기 위해 DankSharding에서는 두가지 개념을 도입하는데, 첫번째는 기존의 블록에서 Blob 데이터가 추가되어 블록 사이즈가 커지고 블록을 제안하기 위한 노드의 하드웨어 요구사항이 증가함에 따라, 블록 제안의 중앙화를 방지하기 위해 블록을 생성하는 Builder와 블록을 제안하는 Proposer를 따로 두는 PBS(Proposer-Builder Separation)과 두번째는 각 샤드의 데이터가 합쳐진 블록의 데이터에 대한 데이터 가용성 증명이 요구되어, 대용량 데이터 가용성 증명을 위해 Blob을 만드는 빌더가 해당 데이터에 대한 하나의 KZG commitment를 재구성하는 과정에서 생기는 과도한 연산을 피하기 위해 Erasure Coding을 통해 m개의 commitment를 2m으로 확장하는 2-Dimensional KZG Scheme가 있다.
+
+
+
+## PBS(Proposer-Builder Separation)
+
+
+
+
+
+## 2-Dimensional Scheme
 
 
 
