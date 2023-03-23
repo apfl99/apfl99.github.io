@@ -23,7 +23,7 @@ search: true #검색 피하기
   - Rollup
 
 - DankSharding 이란
-- DankSharding 이전 Ethereum
+- DankSharding 관련 연구
   - Data Availability
     - Data Availability Problem
     - DAS(Data Availability Sampling)
@@ -64,7 +64,7 @@ DankSharding 이전의 샤딩은 이더리움의 확장성 솔루션으로, 다�
 
 ![image-20230320002942785](../../images/2023-03-19-dankSharding/image-20230320002942785.png)
 
- 외부 체인(Layer 2)에서 실행한 압축된 트랜잭션 모음과 Layer 2의 State Root로 구성된 Batch을 Ethereum의 트랜잭션 Calldata 영역에 게시함으로써 이더리움의 보안을 상속받는 확장성 솔루션인 롤업이 등장하고 도입 시, 
+ 외부 체인(Layer 2)에서 실행한 압축된 트랜잭션 모음과 Layer 2의 State Root로 구성된 Batch을 Ethereum의 트랜잭션 Calldata 영역에 게시함으로써 이더리움의 보안을 상속받는 확장성 솔루션인 롤업이 등장하고 도입 시 이더리움 전송의 경우, 
 
 - 현재 이더리움 블록당 가스 한도: 1250만개
 
@@ -84,7 +84,7 @@ DankSharding 이전의 샤딩은 이더리움의 확장성 솔루션으로, 다�
 
 위와 같이 확장성 성능 지표인 TPS(Transaction Per Second)에서 우수한 예측 결과를 보여주면서 이더리움은 롤업 중점의 로드맵을 예정했다.
 
-이에 샤딩의 역할은 데이터 처리가 아닌, 롤업에서 Layer 1에서 검증을 위해 Layer 2로 게시한 데이터인 Batch가 가용한가에 대한 데이터 가용성 문제에 중점을 두었고,  데이터 가용성 문제는 이더리움에서 롤업이 아니더라도 최신 블록 헤더에만 동기화하고 블록 전체 데이터를 가진 풀 노드에서 다른 정보를 요청하는 이더리움 노드인 라이트 클라이언트가 전체 노드로 부터 받은 데이터에 대한 가용성 증명을 연구하고 있었기에 앞서 연구된 데이터 가용성 증명 개념을 활용하여 데이터 가용성 증명을 효율적으로 할 수 있는 샤딩 디자인인 DankSharding이 등장하였다.
+이에 샤딩의 역할은 데이터 처리가 아닌, 롤업에서 Layer 1에서 검증을 위해 Layer 2로 게시한 데이터인 Batch가 가용한가에 대한 데이터 가용성 문제에 중점을 두었고,  데이터 가용성 문제는 이더리움에서 롤업이 아니더라도 최신 블록 헤더에만 동기화하고 블록 전체 데이터를 가진 풀 노드에서 다른 정보를 요청하는 이더리움 노드인 라이트 클라이언트가 전체 노드로부터 받은 데이터에 대한 가용성 증명을 연구하고 있었기에 앞서 연구된 데이터 가용성 증명 개념을 활용하여 데이터 가용성 증명을 효율적으로 할 수 있는 샤딩 디자인인 DankSharding이 등장하였다.
 
 
 
@@ -110,7 +110,7 @@ DankSharding은 블록을 만드는 빌더를 제안자와 분리하여 따로 �
 
 
 
-# DankSharding 이전 Ethereum
+# DankSharding 관련 연구
 
 ---
 
@@ -165,7 +165,7 @@ DAS란 데이터 가용성 샘플링으로,
 
 ![blob](../../images/2023-03-19-dankSharding/blob.png)
 
-위와 같이 임의의 길이를 가진 문자열과 배열을 인코딩하는 방식인 RLP(Recursive Length Prefix)인코딩을 통해 직렬화된 데이터를 이진 데이터로 나타내어 임의의 인덱스를 여러 라운드에 거쳐 다운로드함으로써 통계적인 보증을 얻는 방법이다.
+위와 같이 임의의 길이를 가진 문자열과 배열을 인코딩하는 방식인 RLP(Recursive Length Prefix)인코딩을 통해 16진수로 직렬화된 데이터를 이진 데이터로 나타내어 임의의 인덱스를 여러 라운드에 거쳐 다운로드함으로써 통계적인 보증을 얻는 방법이다.
 
 그러나 여전히 검열되지 않은 데이터의 확률이 존재하며, 이를 보완하기 위해 데이터를 확장하는 Erasure Coding과 데이터가 올바르게 확장되었는지 검증하는 KZG commitment를 같이 사용한다.
 
@@ -192,7 +192,14 @@ Erasure Coding에는 Reed-Solomon Code를 활용하는데, Reed-Solomon Code는
 
 ![modular 4](../../images/2023-03-19-dankSharding/modular 4.png)
 
-따라서 만약 원래 데이터의 길이가 k, 확장된 데이터의 길이가 2k라고 가정할 때 원래 데이터 복구에 필요한 데이터는 k이상이기 때문에 악의적인 노드는 DAS에 의해 검열되지 않기 위해 k+1이상 데이터를 숨겨야한다. 이는 한 번의 라운드에서 데이터가 가용할 확률을 약 50%(**(k+1)/****2k** )로 낮추고, 예를 들어 30번의 라운드가 진행된다고 할 때, 확률은 **2^(-30)**(약 10억분의 1)로 DAS를 효과적으로 보완한다.
+따라서 Erasure Coding으로 다음과 같이 데이터를 확장했을 때, 
+
+- 원래 데이터의 길이: k
+- 확장된 데이터의 길이: 2k 
+
+원래 데이터 복구에 필요한 데이터는 k이상이기 때문에 악의적인 노드는 DAS에 의해 검열되지 않기 위해 k+1이상 데이터를 숨겨야한다.
+
+이는 한 번의 라운드에서 데이터가 가용할 확률을 약 50%(**(k+1)/****2k** )로 낮추고, 예를 들어 30번의 라운드가 진행된다고 할 때, 확률은 **2^(-30)**(약 10억분의 1)로 DAS를 효과적으로 보완한다.
 
 
 
@@ -232,13 +239,13 @@ Rollup이란 Layer 2 확장성 솔루션으로, 다음과 같이
 
 ![img](../../images/2023-03-19-dankSharding/access-gagraphic-3200051-20230322174302164.jpg)
 
-이더리움의 User는 Smart Contract를 통해 롤업 프로젝트에 예치함으로써 Layer 2에 참여하게 되고, Layer 2에서 발생한 트랜잭션은 Layer 2의 Aggregator를 통해 트랜잭션에 대한 증명과 함께 Layer 1의 Smart Contract에 게시함으로써 이더리움의 보안을 상속받는다.
+이더리움의 User는 Smart Contract를 통해 롤업 프로젝트에 예치함으로써 Layer 2에 참여하게 되고, Layer 2에서 발생한 트랜잭션 데이터는 Layer 2의 Aggregator를 통해 트랜잭션에 대한 증명과 함께 Layer 1의 Smart Contract에 게시함으로써 이더리움의 보안을 상속받는다.
 
 Layer 2에서 Layer 1으로 게시하는 과정을 보면 DankSharding의 등장배경에서 봤던 것과 같이 
 
 ![image-20230320002942785](../../images/2023-03-19-dankSharding/image-20230320002942785.png)
 
-외부 체인(Layer 2)에서 Aggregator를 통해 실행한 압축된 트랜잭션 모음과 Layer 2의 State Root로 구성된 Batch을 Ethereum의 트랜잭션 Calldata 영역에 게시하며, 여기서 Aggregator가 게시한 Batch의 상태 루트가 유효한지 증명하는 방식에 따라 Optimisitic Rollup과 ZK Rollup으로 나뉜다.
+외부 체인(Layer 2)에서 Aggregator를 통해 실행한 압축된 트랜잭션 모음과 Layer 2의 State Root로 구성된 Batch을 Ethereum의 트랜잭션 Calldata 영역에 게시하며, 여기서 Aggregator가 게시한 Batch의 Post-state Root가 유효한지 증명하는 방식에 따라 Optimisitic Rollup과 ZK Rollup으로 나뉜다.
 
 
 
@@ -248,24 +255,53 @@ Layer 2에서 Layer 1으로 게시하는 과정을 보면 DankSharding의 등장
 
 ---
 
-Optimistic Rollup은 사기 증명을 통해 Layer 2에서 올린 상태 루트가 유효한지 증명한다.
+Optimistic Rollup은 우선 Aggregator가 올린 트랜잭션 데이터가 유효하다는 가정하에 먼저 Layer 1의 Smart Contract에 게시하고, 이후 사기 증명을 통해 Layer 2에서 올린 상태 루트가 유효한지 증명한다.
 
-사기 증명을 위하여 Layer 2에서는 다음과 같이 
+Layer 1의 사기 증명을 위해  Layer 2에서는 다음과 같이 
 
-![img](../../images/2023-03-19-dankSharding/tree.png)
+![img](../../images/2023-03-19-dankSharding/tree.png) 
+
 {: .align-center}
 
-Pre-state root로부터 Post-state root가 재계산되기 위한 녹색 데이터를 제공하고, 이를 일정 기간을 두고 Layer 2가 올린 Batch가 유효한지 검증함으로써 사기 증명이 이루어진다. 이때, 만약 재계산된 Post-state root가 Batch의 Post-state root와 일치하지 않을 경우, Layer 2는 트랜잭션을 다시 실행하고 그에 따라 해당 Batch를 게시한 Aggregator는 패널티를 받는다.
+Batch의 트랜잭션이 포함되기 전 롤업의 Pre-state root로부터 Batch의 트랜잭션이 포함된 후 롤업의 Post-state root가 재계산되기 위한 녹색 데이터를 제공하고, 일정 기간을 두고 Aggregator가 올린 Batch가 유효한지 State Root의 재계산을 통해 검증함으로써 트랜잭션 데이터에 대한 사기 증명이 이루어진다.
+
+이 과정에서, 일정 기간 내에  Layer 1에서 재계산된 Post-state root가 Batch의 Post-state root와 일치하지 않다는 사기 증거가 제출될 경우, Layer 2는 트랜잭션을 다시 실행하고 일치할 경우, Post-state root가 해당 Smart Contract에 업데이트 된다.
 
 
 
 
 
-### ZK rollup
+### ZK Rollup
 
 ----
 
+ZK Rollup은 Zero-Knowledge Rollup의 약자로, 영지식 증명을 활용한 롤업이다.
 
+영지식 증명이란 정보를 공개하지 않고, 정보의 유효성을 증명할 수 있는 방법으로, 다음과 같은 요소로 구성된다.
+
+- Prover: 자신이 가진 정보를 공개하지 않고, Verifier에게 자신이 정보를 알고 있다는 사실을 증명하고 싶은 참여자
+- Verifier: Prover가 해당 정보를 알고 있음을 검증하고 싶은 참여자
+- Secret: Prover가 알고 있다는 것을 증명하고 싶은 정보이자, 공개하지 않는 정보
+- Challenge: Verifier가 Prover에게 Secret을 가지고 있는지 확인하기 위해 문제를 내는 과정
+
+이를 대표적인 예시인 알리바바 동굴로 예를 들면,
+
+![img](../../images/2023-03-19-dankSharding/1*bLQHTNQfqhn-cl6nEJpX2Q.png)
+
+- Prover: 동굴 밖에서 A 혹은 B로 나오라고 Challenge를 하는 사람
+- Verifier: 동굴 안에서 Challenge에 따라 나옴으로써 자신이 동굴 안의 문을 열 수 있는 비밀을 알고 있다는 것을 증명하고자 하는 사람
+- Secret: 동굴 안의 문을 열 수 있는 비밀
+- Challenge: Prover가 Verifier에게 A 혹은 B를 요구하는 과정
+
+Prover는 Verifier에게 여러 번에 거쳐 Challenge를 함으로써 확률적으로 Verifier가 Secret을 알고 있음을 증명할 수 있다.
+
+따라서 이러한 점을 활용하여 zk Rollup에서는 증명을 위해 모든 트랜잭션 데이터를 게시하는 Optimistic Rollup과 달리, 
+
+- Prover: Layer 1의 Smart Contract
+- Verifier: Aggregator
+- Secret: 트랜잭션 데이터
+
+의 구조를 가지고, Aggregator는 Layer 1의 Smart Contract에 게시하기 전, 트랜잭션 데이터에 대한 유효성 증명(Merkle Proof)을 수행하고, Pre-State Root로부터 트랜잭션 데이터가 포함되어 Post-State Root가 도출되었다는 영지식 증명을 게시하고 이를 활용하여 Pre-state Root로부터 Post-state Root가 유효한지 증명한다.
 
 
 
@@ -275,7 +311,7 @@ Pre-state root로부터 Post-state root가 재계산되기 위한 녹색 데이�
 
 ---
 
-DankSharding은 앞선 데이터 가용성 연구를 토대로, 다음과 같은 구조를 갖는데
+DankSharding은 앞선 연구를 토대로, 다음과 같은 구조를 갖는데
 
 ![image-20230321112508272](../../images/2023-03-19-dankSharding/image-20230321112508272.png)
 
@@ -341,7 +377,7 @@ DankSharding은 앞선 데이터 가용성 연구를 토대로, 다음과 같은
   <br>
   19) <a>https://ethereum.org/en/developers/docs/scaling/zk-rollups/</a>
   <br>
-  20) <a></a>
+  20) <a>https://hyun-jeong.medium.com/h-3c3d45861ced</a>
   <br>
   21) <a></a>
   <br>
