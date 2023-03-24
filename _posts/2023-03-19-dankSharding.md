@@ -36,9 +36,12 @@ search: true #검색 피하기
 
 - DankSharding
   - PBS
+    - MEV 중앙화 문제
+    - Two-slot PBS
+    - crList
   - 2D KZG Scheme
-
-- 현 상황
+  
+- Summary & 향후 연구
 
 
 
@@ -102,9 +105,9 @@ DankSharding이란 다음과 같이 이더리움이 확장성 개선을 위해 �
 
 ![image-20230315175327381](../../images/2023-03-19-dankSharding/image-20230315175327381.png)
 
-데이터 가용성 측면에서 봤을 때, 기존의 샤딩은 왼쪽과 같이 실행 데이터 검증을 위해 위원회의 검증자들은 각 샤드마다 해당 샤드의 모든 데이터를 다운로드함으로써 데이터 가용성을 확인했다면, 
+데이터 가용성 측면에서 봤을 때, 기존의 샤딩은 왼쪽과 같이 실행 데이터 검증을 위해 각 샤드 위원회의 검증자들은 해당 샤드의 모든 데이터를 다운로드함으로써 데이터 가용성을 확인했다면, 
 
-DankSharding은 블록을 만드는 빌더를 제안자와 분리하여 따로 두고, 빌더는 Beacon 블록과 함께 각 샤드의 Batch로 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고 빌더가 생성한 Blob을 각 샤드 검증자들로 구성된 위원회가 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
+DankSharding은 블록을 만드는 빌더를 제안자와 분리하여 따로 두고, 빌더는 Beacon 블록과 함께 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고 빌더가 생성한 Blob을 통해 한 위원회에서 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
 
 
 
@@ -167,7 +170,11 @@ DAS란 데이터 가용성 샘플링으로,
 
 위와 같이 임의의 길이를 가진 문자열과 배열을 인코딩하는 방식인 RLP(Recursive Length Prefix)인코딩을 통해 16진수로 직렬화된 데이터를 이진 데이터로 나타내어 임의의 인덱스를 여러 라운드에 거쳐 다운로드함으로써 통계적인 보증을 얻는 방법이다.
 
-그러나 여전히 검열되지 않은 데이터의 확률이 존재하며, 이를 보완하기 위해 데이터를 확장하는 Erasure Coding과 데이터가 올바르게 확장되었는지 검증하는 KZG commitment를 같이 사용한다.
+그러나 여전히 검열되지 않은 데이터의 확률이 존재하며, 이를 보완하기 위해 데이터를 확장하는 Erasure Coding과 데이터가 올바르게 확장되었는지 검증하는 KZG commitment를 같이 사용하고, DankSharding에서는 다음과 같이
+
+![j4afAvY](../../images/2023-03-19-dankSharding/j4afAvY-9632159.png)
+
+각 샤드의 제안자가 Original Data, Erasure Coding으로 확장된 Data, Merkle Proof, Commitment로 구성된 Blob 형태의 데이터를 제안한다.
 
 
 
@@ -315,13 +322,92 @@ DankSharding은 앞선 연구를 토대로, 다음과 같은 구조를 갖는데
 
 ![image-20230321112508272](../../images/2023-03-19-dankSharding/image-20230321112508272.png)
 
-이는 Beacon 블록과 함께 각 샤드의 데이터로 데이터 가용성 증명을 위한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고, 각 샤드의 검증자들이 Blob을 통해 각 샤드의 검증자들이 데이터 가용성 증명을 검증한다.
+이는 Beacon Block과 함께 각 샤드의 제안자가 제안한 Blob들로 새로운 Blob을 재구성하여 구성된 하나의 큰 블록을 생성하고, 한 위원회에서 Blob을 통한 데이터 가용성 검사와 Beacon Block 검증을 수행한다.
 
-이러한 구조가 도입되기 위해 DankSharding에서는 두가지 개념을 도입하는데, 첫번째는 기존의 블록에서 Blob 데이터가 추가되어 블록 사이즈가 커지고 블록을 제안하기 위한 노드의 하드웨어 요구사항이 증가함에 따라, 블록 제안의 중앙화를 방지하기 위해 블록을 생성하는 Builder와 블록을 제안하는 Proposer를 따로 두는 PBS(Proposer-Builder Separation)과 두번째는 각 샤드의 데이터가 합쳐진 블록의 데이터에 대한 데이터 가용성 증명이 요구되어, 대용량 데이터 가용성 증명을 위해 Blob을 만드는 빌더가 해당 데이터에 대한 하나의 KZG commitment를 재구성하는 과정에서 생기는 과도한 연산을 피하기 위해 Erasure Coding을 통해 m개의 commitment를 2m으로 확장하는 2-Dimensional KZG Scheme가 있다.
+이러한 구조가 도입되기 위해 DankSharding에서는 두가지 개념을 제안하는데, 첫번째는 기존의 블록에서 Blob 데이터가 추가되어 블록 사이즈가 커지고 블록을 제안하기 위한 노드의 하드웨어 요구사항이 증가함에 따라, 블록 제안의 중앙화를 방지하기 위해 블록을 생성하는 Builder와 블록을 제안하는 Proposer를 분리하는 PBS(Proposer-Builder Separation)과 두번째는 각 샤드의 Blob이 합쳐져 대용량 데이터에 대한 하나의 Blob으로 재구성하는 과정을 단순화하기 위해 대용량 데이터를 하나의 KZG commitment로 묶기 위해 재계산하는 것이 아닌 Erasure Coding을 통해 기존 Blob들의 KZG commitment를 2배 확장하여 Blob을 재구성하는 2-Dimensional KZG Scheme가 있다.
+
+
 
 
 
 ## PBS(Proposer-Builder Separation)
+
+PBS란 DankSharding으로 새롭게 도입된 개념이 아닌 이더리움의 PoS(Proof of Stake)에서 생기는 MEV(Maximum Extractable Value) 중앙화 문제를 해결하기 위한 목적으로 고안된 개념으로 DankSharding에서는 기존의 Proposer의 역할인 블록 생성과 제안을 Builder와 Proposer로 나눔으로써 블록 제안의 중앙화 문제를 해결한다.
+
+
+
+### MEV 중앙화 문제
+
+---
+
+이더리움의 PoS의 경우, 검증자들이 예치한 금액에 따라 위원회나 블록 제안자로 선발되는데 블록 제안자로 선발될 경우, 블록 제안자는 수익의 극대화를 위해 다음과 같이 
+
+![image-20230324150709985](../../images/2023-03-19-dankSharding/image-20230324150709985.png)
+
+블록 생성시, 임의로 트랜잭션을 포함, 제외 및 재배치할 수 있다. 
+
+이러한 과정에서 표준 블록 보상 및 가스 수수료를 초과하여 블록 제안자가 추출할 수 있는 최대 가치를 MEV라 하는데, 예를 들어 블록 제안자는 다음과 같이 
+
+![image-20230324152603284](../../images/2023-03-19-dankSharding/image-20230324152603284.png)
+
+수익성이 높은 거래를 Mempool에서 포착할 경우, 블록 제안자는 동일한 트랜잭션을 생성한 채 가스비만 더 높게 제출하여 기회를 가로챔으로써 수익을 얻을 수 있다.
+
+여기서 MEV는 일반적으로 소규모로 운영되는 노드보다, 하드웨어 사양을 가지고 빠른 멤풀 업데이트 속도, 효율적인 MEV 추출 알고리즘을 가진 노드에 유리하다.
+
+이렇게 MEV가 특정 중앙화된 블록 제안자들에게만 이득이 되고, 소규모 노드들에게는 불리한 구조를 MEV 중앙화 문제라고 하며, 이를 개선하고자 PBS가 등장하였다.
+
+
+
+
+
+### PBS
+
+---
+
+먼저 PBS의 전체적인 동작을 설명하자면 다음의 요소로 구성되어, 
+
+- Builder: 블록 안에 포함될 트랜잭션 및 트랜잭션 순서를 정하여 MEV 추출 블록 생성 및 생성한 블록을 Proposer에게 제출
+- Proposer: Builder들이 제안한 블록 중 자신에게 이익이 되는 블록을 선택하여 제안
+
+각각의 Builder는 다른 Builder가 자신이 생성한 블록의 MEV를 가로챌 수 있기 때문에 다음과 같이 생성한 블록의 헤더와 Proposer가 Builder로부터 받는 금액인 bid만 제출하며, 
+
+![img](../../images/2023-03-19-dankSharding/1*6eAgi76oNo7zzLBC6__m8g.png)
+
+Proposer는 bid가 높은 Block을 선택하고
+
+![img](../../images/2023-03-19-dankSharding/1*9hgk-8Jjig3M-6k1QUDBfA.png)
+
+이후 자신이 만든 블록 헤더가 선택됐음을 확인한 Builder B는 해당 헤더와 일치하는 블록 바디 또한 추가로 공개하여 Proposer는 Builder가 제출한 블록을 제안한다.
+
+따라서 PBS에서 블록 생성은 일부 높은 사양의 하드웨어를 가진 노드가 수행함으로써 중앙화되지만, 블록 제안은 제출받은 블록을 제안하기만 하면 되기 때문에 낮은 사양의 노드여도 가능하기 때문에 블록 제안의 탈중앙화 이점을 가지며, MEV 또한 Builder의 수익을 Proposer도 나눠 갖기 때문에 MEV 중앙화 문제에도 해결방안이 될 수 있다.
+
+이러한 개념을 토대로 이더리움의 PBS는 아직 연구가 진행 중이며, 가장 유력한 PBS 방법은 Two-Slot PBS로 다음과 같이
+
+![img](../../images/2023-03-19-dankSharding/q3mviQw.png)
+
+이더리움의 블록 제안 기간 단위인 Slot을 두 개로 묶어서 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개하고, 두번째 슬롯에서는 Beacon Block과 선택된 Builder가 제출한 블록 헤더의 블록 바디를 공개하여 검증한다.
+
+그러나 이러한 PBS 구조는 Builder가 트랜잭션을 검열할 수 있는 기능을 제공하며, 이를 방지하기 위해 DankSharding에서는 트랜잭션을 블록에 포함하는 데 Builder에게 전적으로 의존되지 않도록 crList 도입을 제안한다.
+
+
+
+### crList
+
+---
+
+crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 목록으로, Builder가 트랜잭션을 검열하는 것을 방지하는 아이디어이다.
+
+이를 PBS에 적용하면 다음과 같이 
+
+![crlists](../../images/2023-03-19-dankSharding/crlists.png)
+
+1. Proposer는 crList와 crList 요약을 게시한다.
+2. Builder는 블록헤더, bid와 함께 crList의 요약 해시를 제출함으로써 crList를 본 것을 증명한다.
+3. Proposer는 bid에 따라 Builder가 제안한 블록 헤더를 선택한다.
+4. Builder는 블록 바디를 게시하고 crList의 트랜잭션을 모두 포함했거나 블록이 가득 찼다는 증거를 제출한다.
+5. 검증자들은 블록 바디를 검증한다.
+
+동작할 예정이다.
 
 
 
@@ -332,6 +418,12 @@ DankSharding은 앞선 연구를 토대로, 다음과 같은 구조를 갖는데
 
 
 
+
+
+
+# Summary & 향후 연구
+
+---
 
 
 
@@ -389,8 +481,12 @@ DankSharding은 앞선 연구를 토대로, 다음과 같은 구조를 갖는데
   <br>
   20) <a>https://hyun-jeong.medium.com/h-3c3d45861ced</a>
   <br>
-  21) <a></a>
+  21) <a>https://medium.com/a41-ventures/research-pbs%EC%97%90-%EA%B4%80%ED%95%9C-%EA%B0%9C%EB%A1%A0-fb2c38bc865e</a>
   <br>
-  22) <a></a>
+  22) <a>https://ethereum.org/en/developers/docs/mev/</a>
+  <br>
+  23) <a>https://xangle.io/insight/research/635f8c1f6c4f32e243e4349c</a>
+  <br>
+  24) <a>https://ethresear.ch/t/two-slot-proposer-builder-separation/10980</a>
   <br>
 </div>
