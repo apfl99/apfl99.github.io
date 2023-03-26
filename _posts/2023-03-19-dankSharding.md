@@ -234,7 +234,7 @@ Verifier는 Prover로부터 Commitment와 Proof를 받으면, 자신이 증명�
 
 ![kzg detail](../../images/2023-03-19-dankSharding/kzg detail.png)
 
-![kzg detail6](../images/2023-03-19-dankSharding/kzg detail6.png)
+![kzg detail6](../../images/2023-03-19-dankSharding/kzg detail6.png)
 
 
 
@@ -423,7 +423,7 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 이는 다음과 같이 4개의 blob이 있다고 가정할 때,
 
-![2d1](../;../images/2023-03-19-dankSharding/2d1.png)
+![2d1](../../images/2023-03-19-dankSharding/2d1.png)
 
 이에 대해 다음과 같은 2차원 다항식을 활용하여 
 
