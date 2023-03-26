@@ -419,17 +419,21 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 ![j4afAvY](../../images/2023-03-19-dankSharding/j4afAvY-9632159.png)
 
-각 샤드의 제안자들이 제안한 Blob 형태를 하나의 Blob으로 재구성하는 과정을 단순화하기 위해 다시 기존의 Blob들로 하나의 KZG commitment를 재계산하는 것이 아닌 기존 m개의 commitment를 Reed-Solomon Code를 활용하여 2m개의 commitment로 확장함으로써 재구성한다.
+각 샤드의 제안자들이 제안한 Blob 형태를 하나의 큰 Blob으로 재구성하는 과정을 단순화하기 위해 다시 기존의 Blob들로 하나의 KZG commitment를 재계산하는 것이 아닌 기존 m개의 commitment를 Reed-Solomon Code를 활용하여 2m개의 commitment로 확장한다.
 
-이는 예를 들어 4개의 Blob으로 구성된다고 가정할 때, 다음과 같이 
+이는 다음과 같이 4개의 blob이 있다고 가정할 때,
 
-![image-20230326173511105](../../images/2023-03-19-dankSharding/image-20230326173511105.png)
+![2d1](../;../images/2023-03-19-dankSharding/2d1.png)
 
-기존의 Blob은 0~3 Row를 구성하고 4개의 commitment가 8개의 commitment로 확장되어, 해당 모델에서는 다음과 같이 
+이에 대해 다음과 같은 2차원 다항식을 활용하여 
 
 ![2d kzg scheme](../../images/2023-03-19-dankSharding/2d kzg scheme.png)
 
-2차원 다항식을 사용하여 Row와 해당 Row의 데이터를 지나는 다항식을 반영함으로써, 원래 데이터를 4배로 확장하고 각 row에 대한 데이터가 같은 다항식에 존재하는지 증명한다.
+row와 해당 row의 데이터를 지나는 다항식을 정의하고, row에 따라 commitment도 확장됨으로써 다음과 같이 
+
+![2d2](../../images/2023-03-19-dankSharding/2d2.png)
+
+하나의 큰 Blob으로 재구성된다.
 
 
 
@@ -439,7 +443,7 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 ---
 
-따라서 Two-Slot PBS를 기준으로 DankSharding의 동작을 정리하면, 
+
 
 
 
@@ -510,5 +514,7 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
   25) <a>Danksharding Workshop - Ethereum Foundation</a>
   <br>
   26) <a>Data availability commitments with distributed reconstruction thanks to 2d KZG comm. - Dankrad Feist</a>
+  <br>
+  27) <a>https://hackmd.io/@vbuterin/in_protocol_PBS</a>
   <br>
 </div>
