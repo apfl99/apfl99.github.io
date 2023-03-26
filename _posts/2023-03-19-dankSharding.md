@@ -234,7 +234,7 @@ Verifier는 Prover로부터 Commitment와 Proof를 받으면, 자신이 증명�
 
 ![kzg detail](../../images/2023-03-19-dankSharding/kzg detail.png)
 
-![kzg detail6](../../images/2023-03-19-dankSharding/kzg detail6.png)
+![kzg detail6](../images/2023-03-19-dankSharding/kzg detail6.png)
 
 
 
@@ -383,9 +383,9 @@ Proposer는 bid가 높은 Block을 선택하고
 
 이러한 개념을 토대로 이더리움의 PBS는 아직 연구가 진행 중이며, 가장 유력한 PBS 방법은 Two-Slot PBS로 다음과 같이
 
-![img](../../images/2023-03-19-dankSharding/q3mviQw.png)
+![image-20230326185525832](../../images/2023-03-19-dankSharding/image-20230326185525832.png)
 
-이더리움의 블록 제안 기간 단위인 Slot을 두 개로 묶어서 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개하고, 두번째 슬롯에서는 Beacon Block과 선택된 Builder가 제출한 블록 헤더의 블록 바디를 공개하여 검증한다.
+이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록을 검증하고 해당 검증 서명을 집계 및 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
 
 그러나 이러한 PBS 구조는 Builder가 트랜잭션을 검열할 수 있는 기능을 제공하며, 이를 방지하기 위해 DankSharding에서는 트랜잭션을 블록에 포함하는 데 Builder에게 전적으로 의존되지 않도록 crList 도입을 제안한다.
 
@@ -415,7 +415,21 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 ## 2-Dimensional Scheme
 
+2-Dimensional Scheme은 DankSharding에서 다음과 같이
 
+![j4afAvY](../../images/2023-03-19-dankSharding/j4afAvY-9632159.png)
+
+각 샤드의 제안자들이 제안한 Blob 형태를 하나의 Blob으로 재구성하는 과정을 단순화하기 위해 다시 기존의 Blob들로 하나의 KZG commitment를 재계산하는 것이 아닌 기존 m개의 commitment를 Reed-Solomon Code를 활용하여 2m개의 commitment로 확장함으로써 재구성한다.
+
+이는 예를 들어 4개의 Blob으로 구성된다고 가정할 때, 다음과 같이 
+
+![image-20230326173511105](../../images/2023-03-19-dankSharding/image-20230326173511105.png)
+
+기존의 Blob은 0~3 Row를 구성하고 4개의 commitment가 8개의 commitment로 확장되어, 해당 모델에서는 다음과 같이 
+
+![2d kzg scheme](../../images/2023-03-19-dankSharding/2d kzg scheme.png)
+
+2차원 다항식을 사용하여 Row와 해당 Row의 데이터를 지나는 다항식을 반영함으로써, 원래 데이터를 4배로 확장하고 각 row에 대한 데이터가 같은 다항식에 존재하는지 증명한다.
 
 
 
@@ -424,6 +438,10 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 # Summary & 향후 연구
 
 ---
+
+따라서 Two-Slot PBS를 기준으로 DankSharding의 동작을 정리하면, 
+
+
 
 
 
@@ -488,5 +506,9 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
   23) <a>https://xangle.io/insight/research/635f8c1f6c4f32e243e4349c</a>
   <br>
   24) <a>https://ethresear.ch/t/two-slot-proposer-builder-separation/10980</a>
+  <br>
+  25) <a>Danksharding Workshop - Ethereum Foundation</a>
+  <br>
+  26) <a>Data availability commitments with distributed reconstruction thanks to 2d KZG comm. - Dankrad Feist</a>
   <br>
 </div>
