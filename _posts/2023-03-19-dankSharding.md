@@ -461,7 +461,7 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 다음과 같이 각 샤드에서 올라온 Blob을 Builder가 2-Dimensional KZG Scheme을 통해 하나의 큰 Blob을 생성 및 Block으로 만들어 헤더와 bid를 공개하고, 
 
-![image-20230327153810659](../images/2023-03-19-dankSharding/image-20230327153810659.png)
+![image-20230327153810659](../../images/2023-03-19-dankSharding/image-20230327153810659.png)
 
 Proposer는 Builder들이 만든 Blob 중 자신의 Beacon Block에 포함할 Blob을 선택하여 Beacon Block으로 제안함으로써,
 
@@ -473,7 +473,9 @@ Proposer는 Builder들이 만든 Blob 중 자신의 Beacon Block에 포함할 Bl
 
 현재까지 연구 사항은 Proto-DankSharding이라고 불리는 EIP-4844로, 다음과 같이 Blob 형태를 포함하는 트랜잭션 형식을 연구하고 있으며,
 
-![img](../../images/2023-03-19-dankSharding/1*vI8fEdAx-LgCzAbueu9JNg.png)
+![image-20230327160040256](../../images/2023-03-19-dankSharding/image-20230327160040256.png)
+
+{: .align-center}
 
 PBS, DAS, 2-Dimensional KZG Scheme 등의 구체적인 사항은 향후 연구 과제로 남아있다.
 
