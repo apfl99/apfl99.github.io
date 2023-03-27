@@ -38,7 +38,7 @@ search: true #검색 피하기
   - PBS
     - MEV 중앙화 문제
     - Two-slot PBS
-    - crList
+    - PBS + crList(hybrid PBS)
   - 2D KZG Scheme
   
 - Summary & 향후 연구
@@ -107,7 +107,7 @@ DankSharding이란 다음과 같이 이더리움이 확장성 개선을 위해 �
 
 데이터 가용성 측면에서 봤을 때, 기존의 샤딩은 왼쪽과 같이 실행 데이터 검증을 위해 각 샤드 위원회의 검증자들은 해당 샤드의 모든 데이터를 다운로드함으로써 데이터 가용성을 확인했다면, 
 
-DankSharding은 블록을 만드는 빌더를 제안자와 분리하여 따로 두고, 빌더는 Beacon 블록과 함께 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 블록을 생성하고 빌더가 생성한 Blob을 통해 한 위원회에서 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
+DankSharding은 기존의 Beacon Block에 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 Beacon Block을 생성하고 블록을 검증하는 한 위원회에서 Blob을 통해 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
 
 
 
@@ -206,7 +206,7 @@ Erasure Coding에는 Reed-Solomon Code를 활용하는데, Reed-Solomon Code는
 
 원래 데이터 복구에 필요한 데이터는 k이상이기 때문에 악의적인 노드는 DAS에 의해 검열되지 않기 위해 k+1이상 데이터를 숨겨야한다.
 
-이는 한 번의 라운드에서 데이터가 가용할 확률을 약 50%(**(k+1)/****2k** )로 낮추고, 예를 들어 30번의 라운드가 진행된다고 할 때, 확률은 **2^(-30)**(약 10억분의 1)로 DAS를 효과적으로 보완한다.
+이는 한 번의 라운드에서 데이터가 가용할 확률을 약 50%(**(k+1)/****2k** )로 낮추고, 예를 들어 30번의 라운드가 진행된다고 할 때, 데이터가 전부 가용할 확률은 **2^(-30)**(약 10억분의 1)로 DAS를 효과적으로 보완한다.
 
 
 
@@ -324,7 +324,11 @@ DankSharding은 앞선 연구를 토대로, 다음과 같은 구조를 갖는데
 
 이는 Beacon Block과 함께 각 샤드의 제안자가 제안한 Blob들로 새로운 Blob을 재구성하여 구성된 하나의 큰 블록을 생성하고, 한 위원회에서 Blob을 통한 데이터 가용성 검사와 Beacon Block 검증을 수행한다.
 
-이러한 구조가 도입되기 위해 DankSharding에서는 두가지 개념을 제안하는데, 첫번째는 기존의 블록에서 Blob 데이터가 추가되어 블록 사이즈가 커지고 블록을 제안하기 위한 노드의 하드웨어 요구사항이 증가함에 따라, 블록 제안의 중앙화를 방지하기 위해 블록을 생성하는 Builder와 블록을 제안하는 Proposer를 분리하는 PBS(Proposer-Builder Separation)과 두번째는 각 샤드의 Blob이 합쳐져 대용량 데이터에 대한 하나의 Blob으로 재구성하는 과정을 단순화하기 위해 대용량 데이터를 하나의 KZG commitment로 묶기 위해 재계산하는 것이 아닌 Erasure Coding을 통해 기존 Blob들의 KZG commitment를 2배 확장하여 Blob을 재구성하는 2-Dimensional KZG Scheme가 있다.
+이러한 구조가 도입되기 위해 DankSharding에서는 두가지 개념을 제안하는데, 
+
+첫번째는 기존의 블록에서 Blob 데이터가 추가되어 블록 사이즈가 커지고 블록을 제안하기 위한 노드의 하드웨어 요구사항이 증가함에 따라, 블록 제안의 중앙화를 방지하기 위해 블록을 생성하는 Builder와 블록을 제안하는 Proposer를 분리하는 PBS(Proposer-Builder Separation)와
+
+두번째는 각 샤드의 Blob이 합쳐져 대용량 데이터에 대한 하나의 Blob으로 재구성하는 과정을 단순화하기 위해 대용량 데이터를 하나의 KZG commitment로 묶기 위해 재계산하는 것이 아닌 Erasure Coding을 통해 기존 Blob들의 KZG commitment를 2배 확장하여 Blob을 재구성하는 2-Dimensional KZG Scheme가 있다.
 
 
 
@@ -387,11 +391,11 @@ Proposer는 bid가 높은 Block을 선택하고
 
 이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록을 검증하고 해당 검증 서명을 집계 및 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
 
-그러나 이러한 PBS 구조는 Builder가 트랜잭션을 검열할 수 있는 기능을 제공하며, 이를 방지하기 위해 DankSharding에서는 트랜잭션을 블록에 포함하는 데 Builder에게 전적으로 의존되지 않도록 crList 도입을 제안한다.
+그러나 이러한 PBS 구조는 Builder가 트랜잭션을 검열할 수 있는 기능을 제공하며, 이를 방지하기 위해 DankSharding에서는 트랜잭션을 블록에 포함하는 데 Builder에게 전적으로 의존되지 않도록 PBS와 Proposer가 Builder가 포함해야 하는 트랜잭션 목록을 일부 지정할 수 있는 crList를 함께 사용하는 hybrid PBS를 제안했다.
 
 
 
-### crList
+### hybrid PBS(PBS + crList)
 
 ---
 
@@ -407,7 +411,7 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 4. Builder는 블록 바디를 게시하고 crList의 트랜잭션을 모두 포함했거나 블록이 가득 찼다는 증거를 제출한다.
 5. 검증자들은 블록 바디를 검증한다.
 
-동작할 예정이다.
+동작하여 DankSharding에서는 이러한 모델을 통해 기존의 블록에서 데이터 가용성 증명을 위한 하나의 큰 Blob이 추가되어 블록 사이즈가 커짐에 따라 나타날 수 있는 블록 제안의 중앙화 현상을 방지하고자 하였다.
 
 
 
@@ -419,21 +423,27 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 ![j4afAvY](../../images/2023-03-19-dankSharding/j4afAvY-9632159.png)
 
-각 샤드의 제안자들이 제안한 Blob 형태를 하나의 큰 Blob으로 재구성하는 과정을 단순화하기 위해 다시 기존의 Blob들로 하나의 KZG commitment를 재계산하는 것이 아닌 기존 m개의 commitment를 Reed-Solomon Code를 활용하여 2m개의 commitment로 확장한다.
+각 샤드의 제안자들이 제안한 Blob 형태를 하나의 큰 Blob으로 재구성하는 과정을 단순화하기 위해 제안된 모델로, 블록을 생성하는 Builder가 다시 기존의 Blob들로 하나의 KZG commitment를 재계산하는 것이 아닌 기존 m개의 commitment를 Reed-Solomon Code를 활용하여 2m개의 commitment로 확장한다.
 
 이는 다음과 같이 4개의 blob이 있다고 가정할 때,
 
 ![2d1](../../images/2023-03-19-dankSharding/2d1.png)
 
-이에 대해 다음과 같은 2차원 다항식을 활용하여 
+이에 대해 2차원 다항식을 활용하여 
 
 ![2d kzg scheme](../../images/2023-03-19-dankSharding/2d kzg scheme.png)
 
-row와 해당 row의 데이터를 지나는 다항식을 정의하고, row에 따라 commitment도 확장됨으로써 다음과 같이 
+한 차원에서는 row, 한 차원에서는 해당 row의 데이터를 지나는 다항식을 정의하고, row에 따라 commitment도 확장됨으로써 다음과 같이 
 
 ![2d2](../../images/2023-03-19-dankSharding/2d2.png)
 
-하나의 큰 Blob으로 재구성된다.
+하나의 큰 Blob으로 재구성하고, DankSharding에서는 해당 Blob을 통해 다음과 같이 검증자가 행, 열 단위로 데이터를 샘플링하는 DAS를 수행하여 
+
+![2d das](../../images/2023-03-19-dankSharding/2d das.png)
+
+{: .align-center}
+
+대용량 데이터에 대한 데이터 가용성 증명이 가능하도록 하였다.
 
 
 
@@ -442,6 +452,36 @@ row와 해당 row의 데이터를 지나는 다항식을 정의하고, row에 �
 # Summary & 향후 연구
 
 ---
+
+따라서 정리하자면 DankSharding은
+
+
+
+
+
+다음과 같이 각 샤드에서 올라온 Blob을 Builder가 2-Dimensional KZG Scheme을 통해 하나의 큰 Blob을 생성 및 Block으로 만들어 헤더와 bid를 공개하고, 
+
+![image-20230327153810659](../images/2023-03-19-dankSharding/image-20230327153810659.png)
+
+Proposer는 Builder들이 만든 Blob 중 자신의 Beacon Block에 포함할 Blob을 선택하여 Beacon Block으로 제안함으로써,
+
+![image-20230327153904690](../../images/2023-03-19-dankSharding/image-20230327153904690.png)
+
+이렇게 생성된 Beacon Block에 대해 검증자들이 검증 전 Blob으로 DAS를 통해 데이터 가용성 증명을 할 수 있게 된다.
+
+![image-20230327154521735](../../images/2023-03-19-dankSharding/image-20230327154521735.png)
+
+현재까지 연구 사항은 Proto-DankSharding이라고 불리는 EIP-4844로, 다음과 같이 Blob 형태를 포함하는 트랜잭션 형식을 연구하고 있으며,
+
+![img](../../images/2023-03-19-dankSharding/1*vI8fEdAx-LgCzAbueu9JNg.png)
+
+PBS, DAS, 2-Dimensional KZG Scheme 등의 구체적인 사항은 향후 연구 과제로 남아있다.
+
+
+
+
+
+ 
 
 
 
@@ -516,5 +556,7 @@ row와 해당 row의 데이터를 지나는 다항식을 정의하고, row에 �
   26) <a>Data availability commitments with distributed reconstruction thanks to 2d KZG comm. - Dankrad Feist</a>
   <br>
   27) <a>https://hackmd.io/@vbuterin/in_protocol_PBS</a>
+  <br>
+  28) <a>https://medium.com/slcf/ethereum-2-0-3-eip-4844-proto-danksharding-82df4ffec7e1</a>
   <br>
 </div>
