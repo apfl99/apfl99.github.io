@@ -218,23 +218,23 @@ Erasure Coding에는 Reed-Solomon Code를 활용하는데, Reed-Solomon Code는
 
 KZG commitment는 Prover가 commitment 값인 타원곡선 점을 Verifier에게 보낸 후, Prover는 작업 중인 다항식을 변경할 수 없기 때문에 이를 commitment라고 하며, 하나의 다항식에 대해서만 유효성 증명이 가능한 특성을 활용하여 Erasure Coding으로 확장된 데이터가 같은 다항식 내에 존재하는지 확인한다.
 
-KZG commitment에는 암호학적 성질을 부여하기 위해 이미 정의된 페어링된 타원곡선을 사용하는데, 이는 다음과 같이 이미 정의된 페어링된 타원곡선의 성질을 이용하여, 
+KZG commitment에는 암호학적 성질을 부여하기 위해 이미 정의된 페어링된 타원곡선을 사용하는데, 이는 다음과 같이 이미 정의된 페어링된 타원곡선의 성질을 이용하여,
 
-![kzgcommitment](../../images/2023-03-19-dankSharding/kzgcommitment.png)
+![kzg ecc](../../images/2023-03-19-dankSharding/kzg ecc.png)
 
-Verifier는 Prover로부터 Commitment와 Proof를 받으면, 자신이 증명하는 데이터 z가 f(x)위에 존재하는지 증명할 수 있도록 할 수 있게 함으로써, Erasure coding에서 확장된 데이터가 올바르게 확장되었는지 증명이 가능하도록 한다.
+Verifier는 미리 정의된 다항식에 대한 Commitment와 Prover로부터 Proof를 받으면, 다항식 p(x) 모르더라도 자신이 증명하는 데이터 z가 p(x)위에 존재하는지 증명할 수 있도록 할 수 있게 함으로써, Erasure coding에서 확장된 데이터가 올바르게 확장되었는지 증명이 가능하도록 한다.
 
 이를 수식으로 나타내면, 
 
-- Erasure Coding과 같은 다항식: P(x)
+- Erasure Coding과 같은 다항식: p(x)
 - 이미 정해진 다항식의 Generate Point: [G]<sub>1</sub>, [G]<sub>2</sub>
 - 비밀 s를 서로 페어링된 타원곡선 1, 2에 대응시킨 점: [s]<sub>1</sub>,[s]<sub>2</sub> (이후 s는 파기)
 
 가 먼저 설정되고, 다음과 같이 진행된다.
 
-![kzg detail](../../images/2023-03-19-dankSharding/kzg detail.png)
+![kzg commitment flow1](../../images/2023-03-19-dankSharding/kzg commitment flow1.png)
 
-![kzg detail6](../../images/2023-03-19-dankSharding/kzg detail6.png)
+![kzg commitment](../../images/2023-03-19-dankSharding/kzg commitment-9969590.png)
 
 
 
@@ -455,17 +455,13 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 따라서 정리하자면 DankSharding은
 
-
-
-
-
 다음과 같이 각 샤드에서 올라온 Blob을 Builder가 2-Dimensional KZG Scheme을 통해 하나의 큰 Blob을 생성 및 Block으로 만들어 헤더와 bid를 공개하고, 
 
-![image-20230327153810659](../../images/2023-03-19-dankSharding/image-20230327153810659.png)
+![image-20230328104824191](../../images/2023-03-19-dankSharding/image-20230328104824191.png)
 
 Proposer는 Builder들이 만든 Blob 중 자신의 Beacon Block에 포함할 Blob을 선택하여 Beacon Block으로 제안함으로써,
 
-![image-20230327153904690](../../images/2023-03-19-dankSharding/image-20230327153904690.png)
+![image-20230328104803002](../../images/2023-03-19-dankSharding/image-20230328104803002.png)
 
 이렇게 생성된 Beacon Block에 대해 검증자들이 검증 전 Blob으로 DAS를 통해 데이터 가용성 증명을 할 수 있게 된다.
 
