@@ -23,7 +23,7 @@ search: true #검색 피하기
   - Rollup
 
 - DankSharding 이란
-- DankSharding 관련 연구
+- DankSharding 발전 방향
   - Data Availability
     - Data Availability Problem
     - DAS(Data Availability Sampling)
@@ -113,7 +113,7 @@ DankSharding은 기존의 Beacon Block에 이더리움의 데이터 가용성 �
 
 
 
-# DankSharding 관련 연구
+# DankSharding 발전 방향
 
 ---
 
@@ -284,28 +284,21 @@ Batch의 트랜잭션이 포함되기 전 롤업의 Pre-state root로부터 Batc
 
 ZK Rollup은 Zero-Knowledge Rollup의 약자로, 영지식 증명을 활용한 롤업이다.
 
-영지식 증명이란 정보를 공개하지 않고, 정보의 유효성을 증명할 수 있는 방법으로, 다음과 같은 요소로 구성된다.
+영지식 증명이란 정보를 공개하지 않고, 정보의 유효성을 증명할 수 있는 방법으로, 다음과 같은 요소로 구성되어
 
 - Prover: 자신이 가진 정보를 공개하지 않고, Verifier에게 자신이 정보를 알고 있다는 사실을 증명하고 싶은 참여자
 - Verifier: Prover가 해당 정보를 알고 있음을 검증하고 싶은 참여자
 - Secret: Prover가 알고 있다는 것을 증명하고 싶은 정보이자, 공개하지 않는 정보
 - Challenge: Verifier가 Prover에게 Secret을 가지고 있는지 확인하기 위해 문제를 내는 과정
 
-이를 대표적인 예시인 알리바바 동굴로 예를 들면,
+![image-20230328163944994](../../images/2023-03-19-dankSharding/image-20230328163944994.png)
 
-![img](../../images/2023-03-19-dankSharding/1*bLQHTNQfqhn-cl6nEJpX2Q.png)
+위와 같이 Prover는 Verifier가 낸 Challenge에 따라 Secret을 공개하지 않는 Proof를 생성 및 전송하고, 이를 통해 Verifier가 확률적인 검증을 하게 된다.
 
-- Prover: 동굴 밖에서 A 혹은 B로 나오라고 Challenge를 하는 사람
-- Verifier: 동굴 안에서 Challenge에 따라 나옴으로써 자신이 동굴 안의 문을 열 수 있는 비밀을 알고 있다는 것을 증명하고자 하는 사람
-- Secret: 동굴 안의 문을 열 수 있는 비밀
-- Challenge: Prover가 Verifier에게 A 혹은 B를 요구하는 과정
+따라서 이러한 점을 활용하여 ZK Rollup에서는 증명을 위해 모든 트랜잭션 데이터를 게시하는 Optimistic Rollup과 달리, 
 
-Prover는 Verifier에게 여러 번에 거쳐 Challenge를 함으로써 확률적으로 Verifier가 Secret을 알고 있음을 증명할 수 있다.
-
-따라서 이러한 점을 활용하여 zk Rollup에서는 증명을 위해 모든 트랜잭션 데이터를 게시하는 Optimistic Rollup과 달리, 
-
-- Prover: Layer 1의 Smart Contract
-- Verifier: Aggregator
+- Prover: Aggregator
+- Verifier: Layer 1의 Smart Contract
 - Secret: 트랜잭션 데이터
 
 의 구조를 가지고, Aggregator는 Layer 1의 Smart Contract에 게시하기 전, 트랜잭션 데이터에 대한 유효성 증명(Merkle Proof)을 수행하고, Pre-State Root로부터 트랜잭션 데이터가 포함되어 Post-State Root가 도출되었다는 영지식 증명을 게시하고 이를 활용하여 Pre-state Root로부터 Post-state Root가 유효한지 증명한다.
