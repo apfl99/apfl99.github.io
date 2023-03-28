@@ -2,7 +2,7 @@
 title: "DankSharding"
 categories:
  - DankSharding
-tags: [] 
+tags: [sharding, rollup, data availability, das, danksharding] 
 toc: true
 author_profile: true #profile sidebar 감추기
 # sidebar:
