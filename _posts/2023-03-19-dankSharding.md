@@ -31,13 +31,13 @@ search: true #검색 피하기
     - KZG commitment
 
   - Rollup
-    - optimistic Rollup
+    - Optimistic Rollup
     - ZK Rollup
 
 - DankSharding
   - PBS
     - MEV 중앙화 문제
-    - Two-slot PBS
+    - PBS
     - hybrid PBS(PBS + crList)
   - 2-Dimensional KZG Scheme
   
@@ -107,7 +107,7 @@ DankSharding이란 다음과 같이 이더리움이 확장성 개선을 위해 �
 
 데이터 가용성 측면에서 봤을 때, 기존의 샤딩은 왼쪽과 같이 실행 데이터 검증을 위해 각 샤드 위원회의 검증자들은 해당 샤드의 모든 데이터를 다운로드함으로써 데이터 가용성을 확인했다면, 
 
-DankSharding은 기존의 Beacon Block에 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 데이터를 추가하여 하나의 큰 Beacon Block을 생성하고 블록을 검증하는 한 위원회에서 Blob을 통해 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
+DankSharding은 기존의 Beacon Block에 이더리움의 데이터 가용성 증명을 위한 연구를 활용한 Blob이라는 형태의 블록을 추가하여 하나의 큰 Beacon Block을 생성하고 블록을 검증하는 한 위원회에서 Blob을 통해 데이터 가용성 증명을 효율적으로 검증할 수 있도록 하였다.
 
 
 
@@ -220,14 +220,16 @@ KZG commitment는 Prover가 commitment 값인 타원곡선 점을 Verifier에게
 
 KZG commitment에는 암호학적 성질을 부여하기 위해 이미 정의된 페어링된 타원곡선을 사용하는데, 이는 다음과 같이 이미 정의된 페어링된 타원곡선의 성질을 이용하여,
 
-![kzg ecc](../../images/2023-03-19-dankSharding/kzg ecc.png)
+![kzg basic](../../images/2023-03-19-dankSharding/kzg basic.png)
 
-Verifier는 미리 정의된 다항식에 대한 Commitment와 Prover로부터 받은 Proof를 가지면, 다항식 p(x) 모르더라도 자신이 증명하는 데이터 z가 p(x)위에 존재하는지 증명할 수 있도록 할 수 있게 함으로써, Erasure coding에서 확장된 데이터가 올바르게 확장되었는지 증명이 가능하도록 한다.
+미리 정의된 타원곡선 시작점 G1, G2와 비밀 s를 서로 페어링된 타원곡선 1, 2에 대응시킨 점 s1,s2에서
+
+Verifier는 Erasure Coding에서 정의된 다항식에 대한 타원곡선 점인 Commitment와 p(z)가 y라는 증명에 대한 타원곡선 점인 Proof를 가지면, 다항식 p(x) 모르더라도 자신이 증명하는 데이터 z가 p(x)위에 존재하는지 증명할 수 있도록 할 수 있게 함으로써, Erasure coding에서 확장된 데이터가 올바르게 확장되었는지 증명이 가능하도록 한다.
 
 이를 수식으로 나타내면, 
 
-- Erasure Coding과 같은 다항식: p(x)
-- 이미 정해진 다항식의 Generate Point: [G]<sub>1</sub>, [G]<sub>2</sub>
+- Erasure Coding에서 데이터가 지나는 다항식: p(x)
+- 미리 정의된 타원곡선 시작점: [G]<sub>1</sub>, [G]<sub>2</sub>
 - 비밀 s를 서로 페어링된 타원곡선 1, 2에 대응시킨 점: [s]<sub>1</sub>,[s]<sub>2</sub> (이후 s는 파기)
 
 가 먼저 설정되고, 다음과 같이 진행된다.
@@ -301,7 +303,7 @@ ZK Rollup은 Zero-Knowledge Rollup의 약자로, 영지식 증명을 활용한 �
 - Verifier: Layer 1의 Smart Contract
 - Secret: 트랜잭션 데이터
 
-의 구조를 가지고, Aggregator는 Layer 1의 Smart Contract에 게시하기 전, 트랜잭션 데이터에 대한 유효성 증명(Merkle Proof)을 수행하고, Pre-State Root로부터 트랜잭션 데이터가 포함되어 Post-State Root가 도출되었다는 영지식 증명을 게시하고 이를 활용하여 Pre-state Root로부터 Post-state Root가 유효한지 증명한다.
+의 구조를 가지고, Prover 역할인 Aggregator는 Layer 1의 Smart Contract에 게시하기 전, 트랜잭션 데이터에 대한 유효성 증명(Merkle Proof)을 수행하고, Pre-State Root로부터 트랜잭션 데이터가 포함되어 Post-State Root가 도출되었다는 영지식 증명을 게시하고 이를 활용하여 Verifier역할인 Layer 1의 Smart Contracts는 Pre-state Root로부터 Post-state Root가 유효한지 증명한다.
 
 
 
@@ -311,11 +313,11 @@ ZK Rollup은 Zero-Knowledge Rollup의 약자로, 영지식 증명을 활용한 �
 
 ---
 
-DankSharding은 앞선 연구를 토대로, 다음과 같은 구조를 갖는데
+DankSharding은 앞선 개념를 토대로, 다음과 같은 구조를 갖는데
 
-![image-20230321112508272](../../images/2023-03-19-dankSharding/image-20230321112508272.png)
+![image-20230328174139242](../../images/2023-03-19-dankSharding/image-20230328174139242.png)
 
-이는 Beacon Block과 함께 각 샤드의 제안자가 제안한 Blob들로 새로운 Blob을 재구성하여 구성된 하나의 큰 블록을 생성하고, 한 위원회에서 Blob을 통한 데이터 가용성 검사와 Beacon Block 검증을 수행한다.
+이는 Beacon Block과 함께 각 샤드의 제안자가 제안한 Blob들로 새로운 Blob을 재구성하여 구성된 Blob형태의 하나의 큰 블록을 생성하고, 한 위원회에서 Blob을 통한 데이터 가용성 검사와 Beacon Block 검증을 수행한다.
 
 이러한 구조가 도입되기 위해 DankSharding에서는 두가지 개념을 제안하는데, 
 
@@ -382,7 +384,7 @@ Proposer는 bid가 높은 Block을 선택하고
 
 ![image-20230326185525832](../../images/2023-03-19-dankSharding/image-20230326185525832.png)
 
-이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록을 검증하고 해당 검증 서명을 집계 및 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
+이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록(Builder Block)을 검증하고 해당 검증 서명을 집계 및 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
 
 그러나 이러한 PBS 구조는 Builder가 트랜잭션을 검열할 수 있는 기능을 제공하며, 이를 방지하기 위해 DankSharding에서는 트랜잭션을 블록에 포함하는 데 Builder에게 전적으로 의존되지 않도록 PBS와 Proposer가 Builder가 포함해야 하는 트랜잭션 목록을 일부 지정할 수 있는 crList를 함께 사용하는 hybrid PBS를 제안했다.
 
@@ -404,7 +406,7 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 4. Builder는 블록 바디를 게시하고 crList의 트랜잭션을 모두 포함했거나 블록이 가득 찼다는 증거를 제출한다.
 5. 검증자들은 블록 바디를 검증한다.
 
-동작하여 DankSharding에서는 이러한 모델을 통해 기존의 블록에서 데이터 가용성 증명을 위한 하나의 큰 Blob이 추가되어 블록 사이즈가 커짐에 따라 나타날 수 있는 블록 제안의 중앙화 현상을 방지하고자 하였다.
+동작하여 DankSharding에서는 이러한 모델을 통해 기존의 블록에서 데이터 가용성 증명을 위한 하나의 큰 Blob형태의 Builder Block이 추가되어 블록 사이즈가 커짐에 따라 나타날 수 있는 블록 제안의 중앙화 현상을 방지하고자 하였다.
 
 
 
@@ -448,17 +450,17 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 따라서 정리하자면 DankSharding은
 
-다음과 같이 각 샤드에서 올라온 Blob을 Builder가 2-Dimensional KZG Scheme을 통해 하나의 큰 Blob을 생성 및 Block으로 만들어 헤더와 bid를 공개하고, 
+다음과 같이 각 샤드에서 올라온 Blob을 Builder가 2-Dimensional KZG Scheme을 통해 하나의 큰 Blob형태의 블록으로 만들어 헤더와 bid를 공개하고, 
 
-![image-20230328104824191](../../images/2023-03-19-dankSharding/image-20230328104824191.png)
+![image-20230328180912135](../../images/2023-03-19-dankSharding/image-20230328180912135.png)
 
-Proposer는 Builder들이 만든 Blob 중 자신의 Beacon Block에 포함할 Blob을 선택하여 Beacon Block으로 제안함으로써,
+Proposer는 Builder들이 만든 블록 중 자신의 Beacon Block에 포함할 블록을 선택 및 포함하여 Beacon Block으로 제안함으로써,
 
-![image-20230328104803002](../../images/2023-03-19-dankSharding/image-20230328104803002.png)
+![image-20230328180954034](../../images/2023-03-19-dankSharding/image-20230328180954034.png)
 
-이렇게 생성된 Beacon Block에 대해 검증자들이 검증 전 Blob으로 DAS를 통해 데이터 가용성 증명을 할 수 있게 된다.
+이렇게 생성된 Beacon Block에 대해 검증자들이 검증 전 blob형태의 Builder Block으로 DAS를 통해 데이터 가용성 증명을 할 수 있게 된다.
 
-![image-20230327154521735](../../images/2023-03-19-dankSharding/image-20230327154521735.png)
+![image-20230328181142177](../../images/2023-03-19-dankSharding/image-20230328181142177.png)
 
 현재까지 연구 사항은 Proto-DankSharding이라고 불리는 EIP-4844로, 다음과 같이 Blob 형태를 포함하는 트랜잭션 형식을 연구하고 있으며,
 
