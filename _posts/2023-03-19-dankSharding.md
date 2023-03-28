@@ -38,8 +38,8 @@ search: true #검색 피하기
   - PBS
     - MEV 중앙화 문제
     - Two-slot PBS
-    - PBS + crList(hybrid PBS)
-  - 2D KZG Scheme
+    - hybrid PBS(PBS + crList)
+  - 2-Dimensional KZG Scheme
   
 - Summary & 향후 연구
 
@@ -417,9 +417,9 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 
 
 
-## 2-Dimensional Scheme
+## 2-Dimensional KZG Scheme
 
-2-Dimensional Scheme은 DankSharding에서 다음과 같이
+2-Dimensional KZG Scheme은 DankSharding에서 다음과 같이
 
 ![j4afAvY](../../images/2023-03-19-dankSharding/j4afAvY-9632159.png)
 
