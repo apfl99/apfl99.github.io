@@ -222,7 +222,7 @@ KZG commitment에는 암호학적 성질을 부여하기 위해 이미 정의된
 
 ![kzg ecc](../../images/2023-03-19-dankSharding/kzg ecc.png)
 
-Verifier는 미리 정의된 다항식에 대한 Commitment와 Prover로부터 Proof를 받으면, 다항식 p(x) 모르더라도 자신이 증명하는 데이터 z가 p(x)위에 존재하는지 증명할 수 있도록 할 수 있게 함으로써, Erasure coding에서 확장된 데이터가 올바르게 확장되었는지 증명이 가능하도록 한다.
+Verifier는 미리 정의된 다항식에 대한 Commitment와 Prover로부터 받은 Proof를 가지면, 다항식 p(x) 모르더라도 자신이 증명하는 데이터 z가 p(x)위에 존재하는지 증명할 수 있도록 할 수 있게 함으로써, Erasure coding에서 확장된 데이터가 올바르게 확장되었는지 증명이 가능하도록 한다.
 
 이를 수식으로 나타내면, 
 
