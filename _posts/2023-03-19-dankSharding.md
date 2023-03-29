@@ -303,7 +303,7 @@ ZK Rollup은 Zero-Knowledge Rollup의 약자로, 영지식 증명을 활용한 �
 - Verifier: Layer 1의 Smart Contract
 - Secret: 트랜잭션 데이터
 
-의 구조를 가지고, Prover 역할인 Aggregator는 Layer 1의 Smart Contract에 게시하기 전, 트랜잭션 데이터에 대한 유효성 증명(Merkle Proof)을 수행하고, Pre-State Root로부터 트랜잭션 데이터가 포함되어 Post-State Root가 도출되었다는 영지식 증명을 게시하고 이를 활용하여 Verifier역할인 Layer 1의 Smart Contracts는 Pre-state Root로부터 Post-state Root가 유효한지 증명한다.
+의 구조를 가지고, Prover 역할인 Aggregator는 Layer 1의 Smart Contract에 게시하기 전, 트랜잭션 데이터에 대한 유효성 증명(Merkle Proof)을 수행하고, Pre-State Root로부터 트랜잭션 데이터가 포함되어 Post-State Root가 도출되었다는 영지식 증명을 게시하고 이를 활용하여 Verifier역할인 Layer 1의 Smart Contract는 Pre-state Root로부터 Post-state Root가 유효한지 증명한다.
 
 
 
@@ -384,7 +384,7 @@ Proposer는 bid가 높은 Block을 선택하고
 
 ![image-20230329103022756](../../images/2023-03-19-dankSharding/image-20230329103022756.png)
 
-이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록(Builder Block)을 검증하고 해당 검증 서명을 집계 및 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
+이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록(Builder Block)을 검증하고 해당 검증 서명을 집계 후 Beacon Block에 임시 블록(Builder Block) 포함하여 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
 
 그러나 이러한 PBS 구조는 Builder가 트랜잭션을 검열할 수 있는 기능을 제공하며, 이를 방지하기 위해 DankSharding에서는 트랜잭션을 블록에 포함하는 데 Builder에게 전적으로 의존되지 않도록 PBS와 Proposer가 Builder가 포함해야 하는 트랜잭션 목록을 일부 지정할 수 있는 crList를 함께 사용하는 hybrid PBS를 제안했다.
 
@@ -408,7 +408,7 @@ crList는 Proposer가 지정하는 Builder가 포함해야 하는 트랜잭션 �
 4. Builder는 블록 바디를 게시하고 crList의 트랜잭션을 모두 포함했거나 블록이 가득 찼다는 증거를 제출한다.
 5. 검증자들은 블록 바디를 검증한다.
 
-동작하여 DankSharding에서는 이러한 모델을 통해 기존의 블록에서 데이터 가용성 증명을 위한 하나의 큰 Blob형태의 Builder Block이 추가되어 블록 사이즈가 커짐에 따라 나타날 수 있는 블록 제안의 중앙화 현상을 방지하고자 하였다.
+동작하여 DankSharding에서는 이러한 모델을 통해 기존의 Beacon Block에 데이터 가용성 증명을 위한 하나의 큰 Blob형태의 Builder Block이 추가되어 블록 사이즈가 커짐에 따라 나타날 수 있는 블록 제안의 중앙화 현상을 방지하고자 하였다.
 
 
 
@@ -464,31 +464,29 @@ Proposer는 Builder들이 만든 블록 중 자신의 Beacon Block에 포함할 
 
 ![image-20230328181142177](../../images/2023-03-19-dankSharding/image-20230328181142177.png)
 
-현재까지 연구 사항은 Proto-DankSharding이라고 불리는 EIP-4844로, 다음과 같이 Blob 형태를 포함하는 트랜잭션 형식을 연구하고 있으며,
+이에 현재 연구 사항은 Proto-DankSharding이라고 불리는 EIP-4844로, Blob을 포함하는 트랜잭션 형식과 DankSharding을 구동하기 위한 로직을 연구 중이며, Blob을 포함하는 트랜잭션 형식은 다음과 같이
 
 ![image-20230327160040256](../../images/2023-03-19-dankSharding/image-20230327160040256.png)
 
 {: .align-center}
 
-PBS, DAS, 2-Dimensional KZG Scheme 등의 구체적인 사항은 향후 연구 과제로 남아있다.
+기존의 트랜잭션 형식에 파란색 부분이 추가된 것으로, 각 요소는
 
+- blobs: 트랜잭션 데이터에 대한 blob
+- blob_kzgs: blobs에 대한 KZG Commitment
+- blob_versioned_hashes: Version(1byte) + KZG commitment Hash(32bytes => 마지막 31bytes)
+  - Version은 추후 다른 커밋 방식 사용 대비
+  - EVM 연산 호환성을 위해 32bytes
 
+로 구성되고, EVM이 SignedBlobTransaction에만 접근가능하게함으로써 blobs, blob_kzgs의 가스비를 줄였고, blobs와 blob_kzgs는 이더리움 전체 블록 용량이 과도하게 증가하는 것을 방지하고자 30일 이후 삭제되도록 하였다.
 
+이러한 Blob 트랜잭션을 활용하여 DankSharding을 구동하기 위한 로직은 다음과 같이
 
+![img](../../images/2023-03-19-dankSharding/EgS4xvn.png)
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
+롤업의 시퀀서가 올린 Blob 트랜잭션은 이더리움의 트랜잭션 풀에 있다가 Proposer에 의해 선택되어 전달되고, Proposer는 Blob 트랜잭션의 SignedBlobTransaction부분은 Exec payload로, 나머지 부분은 Blobs sidecar로 나누어 이웃 검증인 노드에게 전파한다.
+그러면 이후 이더리움의 검증인 노드들은 Exec Payload 안의 blob_versioned_hashes가 Blobs sidecar의 blob_kzgs와 대응되는지 확인함으로써 commitment을 검증한 후, Execution Payload는 이더리움에 계속 저장되고, Blobs sidecar는 롤업의 검증을 위해 롤업 검증자에게 전달되는 구조이다.
+그러나 EIP-4844에서는 아직 DAS가 도입되지 않아 가용성 검증을 위해 전체 blob data를 다운로드해야하며, DankSharding의 PBS, 2-Dimensional KZG Scheme 또한 연구과제로 남아있다.
 
 
 
@@ -552,6 +550,10 @@ PBS, DAS, 2-Dimensional KZG Scheme 등의 구체적인 사항은 향후 연구 �
   <br>
   27) <a>https://hackmd.io/@vbuterin/in_protocol_PBS</a>
   <br>
-  28) <a>https://medium.com/slcf/ethereum-2-0-3-eip-4844-proto-danksharding-82df4ffec7e1</a>
+  28) <a>https://hackmd.io/@protolambda/eip4844-implementation</a>
+  <br>
+  29) <a>https://medium.com/slcf/ethereum-2-0-3-eip-4844-proto-danksharding-82df4ffec7e1</a>
+  <br>
+  30) <a>https://medium.com/a41-ventures/eip-4844-%EC%8B%9C%EB%A6%AC%EC%A6%88-2-proto-danksharding-a-deep-dive-7b734f0fdb92</a>
   <br>
 </div>
