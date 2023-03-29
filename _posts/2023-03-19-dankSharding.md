@@ -382,7 +382,7 @@ Proposer는 bid가 높은 Block을 선택하고
 
 이러한 개념을 토대로 이더리움의 PBS는 아직 연구가 진행 중이며, 가장 유력한 PBS 방법은 Two-Slot PBS로 다음과 같이
 
-![image-20230326185525832](../../images/2023-03-19-dankSharding/image-20230326185525832.png)
+![image-20230329103022756](../../images/2023-03-19-dankSharding/image-20230329103022756.png)
 
 이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록(Builder Block)을 검증하고 해당 검증 서명을 집계 및 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
 
