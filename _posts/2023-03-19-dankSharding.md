@@ -485,7 +485,9 @@ Proposer는 Builder들이 만든 블록 중 자신의 Beacon Block에 포함할 
 ![img](../../images/2023-03-19-dankSharding/EgS4xvn.png)
 
 롤업의 시퀀서가 올린 Blob 트랜잭션은 이더리움의 트랜잭션 풀에 있다가 Proposer에 의해 선택되어 전달되고, Proposer는 Blob 트랜잭션의 SignedBlobTransaction부분은 Exec payload로, 나머지 부분은 Blobs sidecar로 나누어 이웃 검증인 노드에게 전파한다.
+
 그러면 이후 이더리움의 검증인 노드들은 Exec Payload 안의 blob_versioned_hashes가 Blobs sidecar의 blob_kzgs와 대응되는지 확인함으로써 commitment을 검증한 후, Execution Payload는 이더리움에 계속 저장되고, Blobs sidecar는 롤업의 검증을 위해 롤업 검증자에게 전달되는 구조이다.
+
 그러나 EIP-4844에서는 아직 DAS가 도입되지 않아 가용성 검증을 위해 전체 blob data를 다운로드해야하며, DankSharding의 PBS, 2-Dimensional KZG Scheme 또한 향후 연구과제로 남아있다.
 
 
