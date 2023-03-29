@@ -464,7 +464,7 @@ Proposer는 Builder들이 만든 블록 중 자신의 Beacon Block에 포함할 
 
 ![image-20230328181142177](../../images/2023-03-19-dankSharding/image-20230328181142177.png)
 
-이에 현재 연구 사항은 Proto-DankSharding이라고 불리는 EIP-4844로, Blob을 포함하는 트랜잭션 형식과 DankSharding을 구동하기 위한 로직을 연구 중이며, Blob을 포함하는 트랜잭션 형식은 다음과 같이
+이에 현재 연구 사항은 Proto-DankSharding이라고 불리는 EIP-4844로, Blob을 포함하는 트랜잭션 형식과 DankSharding을 도입하기 위한 로직을 연구 중이며, Blob을 포함하는 트랜잭션 형식은 다음과 같이
 
 ![image-20230329160941803](../../images/2023-03-19-dankSharding/image-20230329160941803.png)
 
@@ -478,15 +478,19 @@ Proposer는 Builder들이 만든 블록 중 자신의 Beacon Block에 포함할 
   - Version은 추후 다른 커밋 방식 사용 대비
   - EVM 연산 호환성을 위해 32bytes
 
-로 구성되고, EVM이 SignedBlobTransaction에만 접근가능하게함으로써 blobs, blob_kzgs의 가스비를 줄였고, blobs와 blob_kzgs는 이더리움 전체 블록 용량이 과도하게 증가하는 것을 방지하고자 30일 이후 삭제되도록 하였다.
+로 구성되고, Blob을 포함하는 트랜잭션 형식에서 다음과 같이 
 
-이러한 Blob 트랜잭션을 활용하여 DankSharding을 구동하기 위한 로직은 다음과 같이
+![img](../../images/2023-03-19-dankSharding/GgfLkvo.png)
+
+EVM이 SignedBlobTransaction에만 접근가능하게함으로써 blobs, blob_kzgs의 가스비를 줄여, 롤업에서 기존에 Batch를 올리기 위해 사용하던 트랜잭션 영역인 calldata 대신 비교적 저렴하게 사용할 수 있도록 하였다. 또한, blobs와 blob_kzgs는 이더리움 전체 블록 용량이 과도하게 증가하는 것을 방지하고자 30일 이후 삭제되도록 하였다.
+
+이러한 Blob을 포함하는 트랜잭션을 활용하여 DankSharding을 구동하기 위한 로직은 롤업에서 다음과 같이
 
 ![img](../../images/2023-03-19-dankSharding/EgS4xvn.png)
 
-롤업의 시퀀서가 올린 Blob 트랜잭션은 이더리움의 트랜잭션 풀에 있다가 Proposer에 의해 선택되어 전달되고, Proposer는 Blob 트랜잭션의 SignedBlobTransaction부분은 Execution payload로, 나머지 부분은 Blobs sidecar로 나누어 이웃 검증인 노드에게 전파한다.
+롤업의 시퀀서가 올린 Blob을 포함하는 트랜잭션은 이더리움의 트랜잭션 풀에 있다가 Proposer에 의해 선택되어 전달되고, Proposer는 Blob을 포함하는  트랜잭션의 SignedBlobTransaction부분은 Execution payload로, 나머지 부분은 Blobs sidecar로 나누어 이웃 검증인 노드에게 전파하고
 
-이후 이더리움의 검증인 노드들은 Execution Payload 안의 blob_versioned_hashes가 Blobs sidecar의 blob_kzgs와 대응되는지 확인함으로써 commitment을 검증한 후, Execution Payload는 이더리움에 계속 저장되고, Blobs sidecar는 롤업의 검증을 위해 롤업 검증자에게 전달되는 구조이다.
+이후 이더리움의 검증인 노드들은 Execution Payload 안의 blob_versioned_hashes가 Blobs sidecar의 blob_kzgs와 대응되는지 확인함으로써 commitment을 검증한 후, Execution Payload는 이더리움에 계속 저장되고, Blobs sidecar는 롤업의 검증 및 저장을 위해 롤업 검증자에게 전달되는 구조이다.
 
 그러나 EIP-4844에서는 아직 DAS가 도입되지 않아 데이터 가용성 증명을 위해 전체 blob data를 다운로드해야하며, DankSharding의 PBS, 2-Dimensional KZG Scheme 또한 향후 연구과제로 남아있다.
 
