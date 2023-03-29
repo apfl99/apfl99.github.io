@@ -390,6 +390,8 @@ Proposer는 bid가 높은 Block을 선택하고
 
 
 
+
+
 ### hybrid PBS(PBS + crList)
 
 ---
