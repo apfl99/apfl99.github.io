@@ -376,13 +376,13 @@ Proposer는 bid가 높은 Block을 선택하고
 
 ![img](../../images/2023-03-19-dankSharding/1*9hgk-8Jjig3M-6k1QUDBfA.png)
 
-이후 자신이 만든 블록 헤더가 선택됐음을 확인한 Builder B는 해당 헤더와 일치하는 블록 바디 또한 추가로 공개하여 Proposer는 Builder가 제출한 블록을 제안한다.
+이후 자신이 만든 블록 헤더가 선택됐음을 확인한 Builder B는 해당 헤더와 일치하는 블록 바디 또한 추가로 공개하여 Proposer는 Builder가 제출한 블록을 포함하여 제안한다.
 
 따라서 PBS에서 블록 생성은 일부 높은 사양의 하드웨어를 가진 노드가 수행함으로써 중앙화되지만, 블록 제안은 제출받은 블록을 제안하기만 하면 되기 때문에 낮은 사양의 노드여도 가능하기 때문에 블록 제안의 탈중앙화 이점을 가지며, MEV 또한 Builder의 수익을 Proposer도 나눠 갖기 때문에 MEV 중앙화 문제에도 해결방안이 될 수 있다.
 
 이러한 개념을 토대로 이더리움의 PBS는 아직 연구가 진행 중이며, 가장 유력한 PBS 방법은 Two-Slot PBS로 다음과 같이
 
-![image-20230329103022756](../../images/2023-03-19-dankSharding/image-20230329103022756.png)
+![image-20230330104026863](./../images/2023-03-19-dankSharding/image-20230330104026863.png)
 
 이더리움의 블록 제안 기간 단위인 Slot을 두 번 사용함으로써, 첫번째 슬롯에서는 Proposer가 Builder들이 제출한 블록 헤더를 bid에 따라 선택하여 블록 헤더를 포함한 Beacon Block을 공개 후 하나의 위원회가 공개된 Beacon Block을 검증하고, 두번째 슬롯에서는 선택된 Builder가 Beacon Block의 검증 서명과 자신이 제출한 블록 바디를 공개 후 나머지 위원회가 해당 임시 블록(Builder Block)을 검증하고 해당 검증 서명을 집계 후 Beacon Block에 임시 블록(Builder Block) 포함하여 블록을 연결하고, 이후 Builder들은 다시 자신이 생성한 블록 헤더를 게시한다.
 
